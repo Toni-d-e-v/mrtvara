@@ -13,23 +13,23 @@
   --muted: #9aa3b2;
   --muted-2: #6b7385;
 
-  /* Ekipe */
-  --spid: #f5a623;
-  --spid-shade: #b97912;
-  --on-spid: #0a0c10;
-  --belo: #e7ecf3;
-  --belo-shade: #aeb8c7;
-  --on-belo: #0a0c10;
+  /* Ekipe — LIQUI (plavi dres) vs FORMULA (crveni dres) */
+  --spid: #2f6bff; /* LIQUI MOLY — plava */
+  --spid-shade: #1e4fbf;
+  --on-spid: #ffffff;
+  --belo: #e23744; /* FORMULA — crvena */
+  --belo-shade: #a52630;
+  --on-belo: #ffffff;
 
-  /* Naglasak (live / aktivno / CTA) */
-  --accent: #4c8dff;
-  --accent-soft: #4c8dff26;
-  --on-accent: #061018;
+  /* Naglasak (live / aktivno / CTA) — jantar, odvojen od boja timova */
+  --accent: #f5a623;
+  --accent-soft: #f5a62326;
+  --on-accent: #0a0c10;
 
   /* Semantika rezultata */
-  --win: #4c8dff;
+  --win: #f5a623;
   --draw: #9aa3b2;
-  --loss: #6b7385;
+  --loss: #ef5350;
 
   --radius-sm: 8px;
   --radius: 12px;

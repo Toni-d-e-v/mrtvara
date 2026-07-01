@@ -1,4 +1,4 @@
-import { formatDate } from "@/lib/ui";
+import { formatDate, TEAM_LABEL } from "@/lib/ui";
 import KitChip from "@/components/KitChip";
 
 export default function ScoreHeader({
@@ -12,9 +12,9 @@ export default function ScoreHeader({
 }) {
   const result =
     spidScore > beloScore
-      ? "Pobjeda SPID"
+      ? `Pobjeda ${TEAM_LABEL.SPID}`
       : beloScore > spidScore
-        ? "Pobjeda BELO"
+        ? `Pobjeda ${TEAM_LABEL.BELO}`
         : "Neriješeno";
 
   return (
@@ -36,7 +36,9 @@ export default function ScoreHeader({
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
           <div className="flex flex-col items-center gap-2">
             <KitChip team="SPID" size={44} />
-            <span className="eyebrow text-sm text-spid">SPID</span>
+            <span className="eyebrow text-center text-xs text-spid">
+              {TEAM_LABEL.SPID}
+            </span>
           </div>
 
           <div className="display flex items-baseline gap-2 text-5xl tabular-nums">
@@ -47,8 +49,11 @@ export default function ScoreHeader({
 
           <div className="flex flex-col items-center gap-2">
             <KitChip team="BELO" size={44} />
-            <span className="eyebrow text-sm" style={{ color: "var(--belo)" }}>
-              BELO
+            <span
+              className="eyebrow text-center text-xs"
+              style={{ color: "var(--belo)" }}
+            >
+              {TEAM_LABEL.BELO}
             </span>
           </div>
         </div>

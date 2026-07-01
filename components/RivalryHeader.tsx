@@ -1,4 +1,5 @@
 import KitChip from "@/components/KitChip";
+import { TEAM_LABEL } from "@/lib/ui";
 
 /**
  * Signature element — "tale of the tape" vječitog derbija SPID vs BELO.
@@ -36,7 +37,9 @@ export default function RivalryHeader({
       <div className="grid grid-cols-3 items-end gap-2 px-4 pt-4">
         <div className="flex flex-col items-center gap-1.5">
           <KitChip team="SPID" size={30} />
-          <span className="eyebrow text-xs text-spid">SPID</span>
+          <span className="eyebrow text-center text-[11px] text-spid">
+            {TEAM_LABEL.SPID}
+          </span>
         </div>
         <div className="flex items-baseline justify-center gap-2">
           <span className="display text-4xl text-spid tabular-nums">{spidWins}</span>
@@ -50,8 +53,11 @@ export default function RivalryHeader({
         </div>
         <div className="flex flex-col items-center gap-1.5">
           <KitChip team="BELO" size={30} />
-          <span className="eyebrow text-xs" style={{ color: "var(--belo)" }}>
-            BELO
+          <span
+            className="eyebrow text-center text-[11px]"
+            style={{ color: "var(--belo)" }}
+          >
+            {TEAM_LABEL.BELO}
           </span>
         </div>
       </div>

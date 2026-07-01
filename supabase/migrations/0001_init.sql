@@ -126,7 +126,7 @@ end $$;
 -- ==================== SEED IGRAČA ====================
 insert into public.players (name, team) values
   ('culjke','SPID'), ('dasa','SPID'), ('vucko','SPID'),
-  ('cosic','SPID'),  ('Nikola','SPID'), ('dzonsta','SPID'),
+  ('cosic','SPID'),  ('Brkic','SPID'),  ('dzonsta','SPID'),
   ('Dika','BELO'),   ('komsic','BELO'), ('zvone','BELO'),
   ('zoka','BELO'),   ('leo','BELO'),    ('leca','BELO')
 on conflict (name) do nothing;

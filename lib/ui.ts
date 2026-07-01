@@ -25,7 +25,9 @@ export function teamColor(team: Team | PlayerTeam): string {
   return "var(--muted)";
 }
 
+// Prikazana imena timova. Interne šifre ('SPID'/'BELO') ostaju stabilne u bazi;
+// mijenja se samo ovaj mapping za prikaz kroz cijeli UI.
 export const TEAM_LABEL: Record<Team, string> = {
-  SPID: "SPID",
-  BELO: "BELO",
+  SPID: "LIQUI MOLY",
+  BELO: "FORMULA",
 };

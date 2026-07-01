@@ -1,6 +1,7 @@
 import { Goal } from "lucide-react";
 import type { Player, GoalWithNames } from "@/lib/types";
 import KitChip from "@/components/KitChip";
+import { TEAM_LABEL } from "@/lib/ui";
 
 export default function LineupFaceoff({
   spid,
@@ -45,8 +46,8 @@ function TeamColumn({
         className={`flex items-center gap-2 border-b border-border px-3 py-2 ${right ? "flex-row-reverse" : ""}`}
       >
         <KitChip team={team} size={18} />
-        <span className="eyebrow text-xs" style={{ color }}>
-          {team}
+        <span className="eyebrow truncate text-xs" style={{ color }}>
+          {TEAM_LABEL[team]}
         </span>
       </div>
       <ul className="divide-y divide-border/60">

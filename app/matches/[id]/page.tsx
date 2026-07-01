@@ -4,7 +4,7 @@ import { isAdmin } from "@/lib/auth";
 import ScoreHeader from "@/components/ScoreHeader";
 import MatchTabs from "@/components/MatchTabs";
 import GoalTimeline from "@/components/GoalTimeline";
-import LineupFaceoff from "@/components/LineupFaceoff";
+import PitchLineup from "@/components/PitchLineup";
 import MatchStatsPanel from "@/components/MatchStatsPanel";
 import GoalForm from "@/components/GoalForm";
 import DeleteMatchButton from "@/components/DeleteMatchButton";
@@ -43,7 +43,7 @@ export default async function MatchPage({
       <MatchTabs
         tijek={<GoalTimeline goals={detail.goals} admin={admin} />}
         postave={
-          <LineupFaceoff
+          <PitchLineup
             spid={detail.spidLineup}
             belo={detail.beloLineup}
             goals={detail.goals}

@@ -55,6 +55,23 @@ export async function updatePlayerTeam(
   revalidatePath("/stats");
 }
 
+export async function updatePlayerName(
+  id: string,
+  name: string,
+): Promise<{ error?: string }> {
+  const trimmed = name.trim();
+  if (!trimmed) return { error: "Ime ne može biti prazno." };
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("players")
+    .update({ name: trimmed })
+    .eq("id", id);
+  if (error) return { error: "Ime već postoji ili je neispravno." };
+  revalidatePath("/players");
+  revalidatePath("/stats");
+  return {};
+}
+
 export async function deletePlayer(id: string): Promise<void> {
   const supabase = await createClient();
   await supabase.from("players").delete().eq("id", id);

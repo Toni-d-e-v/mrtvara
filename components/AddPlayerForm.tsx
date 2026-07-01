@@ -3,6 +3,7 @@
 import { useRef, useTransition } from "react";
 import { Plus } from "lucide-react";
 import { addPlayer } from "@/lib/actions";
+import { TEAM_LABEL } from "@/lib/ui";
 
 export default function AddPlayerForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -30,8 +31,8 @@ export default function AddPlayerForm() {
         defaultValue="UNASSIGNED"
         className="rounded-md border border-border bg-surface-2 px-2 py-2 text-sm outline-none focus:border-accent"
       >
-        <option value="SPID">SPID</option>
-        <option value="BELO">BELO</option>
+        <option value="SPID">{TEAM_LABEL.SPID}</option>
+        <option value="BELO">{TEAM_LABEL.BELO}</option>
         <option value="UNASSIGNED">—</option>
       </select>
       <button

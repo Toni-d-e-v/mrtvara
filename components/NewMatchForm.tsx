@@ -95,13 +95,13 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
               </span>
               <div className="flex overflow-hidden rounded-md border border-border">
                 <Seg active={v === "SPID"} color="var(--spid)" onClick={() => set(p.id, "SPID")}>
-                  SPID
+                  <KitChip team="SPID" size={16} />
                 </Seg>
-                <Seg active={v === "OUT"} onClick={() => set(p.id, "OUT")}>
+                <Seg active={v === "OUT"} color="var(--muted-2)" onClick={() => set(p.id, "OUT")}>
                   —
                 </Seg>
                 <Seg active={v === "BELO"} color="var(--belo)" onClick={() => set(p.id, "BELO")}>
-                  BELO
+                  <KitChip team="BELO" size={16} />
                 </Seg>
               </div>
             </div>
@@ -129,7 +129,7 @@ function Seg({
   children,
 }: {
   active: boolean;
-  color?: string;
+  color: string;
   onClick: () => void;
   children: React.ReactNode;
 }) {
@@ -137,10 +137,11 @@ function Seg({
     <button
       type="button"
       onClick={onClick}
-      className="eyebrow px-2.5 py-1.5 text-xs transition-colors"
+      className="flex min-w-[2.75rem] items-center justify-center px-2.5 py-2 text-xs font-semibold transition-colors"
       style={{
-        background: active ? (color ?? "var(--muted-2)") : "transparent",
-        color: active ? "var(--on-spid)" : "var(--muted)",
+        background: active ? `color-mix(in srgb, ${color} 22%, transparent)` : "transparent",
+        color: active ? "var(--foreground)" : "var(--muted)",
+        boxShadow: active ? `inset 0 0 0 1.5px ${color}` : "none",
       }}
     >
       {children}

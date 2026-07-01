@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { MatchSummary } from "@/lib/types";
-import { formatDate } from "@/lib/ui";
+import { formatDate, TEAM_LABEL } from "@/lib/ui";
 import KitChip from "@/components/KitChip";
 
 export default function MatchCard({ match }: { match: MatchSummary }) {
@@ -30,8 +30,10 @@ export default function MatchCard({ match }: { match: MatchSummary }) {
             className="flex items-center justify-end gap-2 font-semibold"
             style={{ opacity: beloWin ? 0.45 : 1 }}
           >
-            <span className="eyebrow text-sm text-spid">SPID</span>
-            <KitChip team="SPID" size={18} />
+            <span className="eyebrow truncate text-xs text-spid">
+              {TEAM_LABEL.SPID}
+            </span>
+            <KitChip team="SPID" size={18} className="shrink-0" />
           </div>
 
           <div className="display flex items-baseline gap-1.5 text-2xl tabular-nums">
@@ -44,9 +46,12 @@ export default function MatchCard({ match }: { match: MatchSummary }) {
             className="flex items-center gap-2 font-semibold"
             style={{ opacity: spidWin ? 0.45 : 1 }}
           >
-            <KitChip team="BELO" size={18} />
-            <span className="eyebrow text-sm" style={{ color: "var(--belo)" }}>
-              BELO
+            <KitChip team="BELO" size={18} className="shrink-0" />
+            <span
+              className="eyebrow truncate text-xs"
+              style={{ color: "var(--belo)" }}
+            >
+              {TEAM_LABEL.BELO}
             </span>
           </div>
         </div>

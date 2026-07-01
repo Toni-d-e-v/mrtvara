@@ -3,6 +3,7 @@ import { isAdmin } from "@/lib/auth";
 import AddPlayerForm from "@/components/AddPlayerForm";
 import PlayerRow from "@/components/PlayerRow";
 import KitChip from "@/components/KitChip";
+import { TEAM_LABEL } from "@/lib/ui";
 import type { Player } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -15,8 +16,8 @@ export default async function PlayersPage() {
     team: Player["team"];
     color?: string;
   }[] = [
-    { title: "SPID", team: "SPID", color: "var(--spid)" },
-    { title: "BELO", team: "BELO", color: "var(--belo)" },
+    { title: TEAM_LABEL.SPID, team: "SPID", color: "var(--spid)" },
+    { title: TEAM_LABEL.BELO, team: "BELO", color: "var(--belo)" },
     { title: "Neopredijeljeni", team: "UNASSIGNED" },
   ];
 

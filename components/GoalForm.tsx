@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import type { Player, Team } from "@/lib/types";
 import { addGoal } from "@/lib/actions";
 import KitChip from "@/components/KitChip";
+import { TEAM_LABEL } from "@/lib/ui";
 
 export default function GoalForm({
   matchId,
@@ -77,7 +78,7 @@ export default function GoalForm({
               }}
             >
               <KitChip team={t} size={16} />
-              {t}
+              <span className="truncate">{TEAM_LABEL[t]}</span>
             </button>
           );
         })}

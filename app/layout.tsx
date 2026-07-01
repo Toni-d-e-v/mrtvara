@@ -26,7 +26,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Mrtvara Liga",
-  description: "SPID vs BELO — vječiti derbi s Mrtvare. Rezultati, golovi i statistika.",
+  description: "LIQUI MOLY vs FORMULA — vječiti derbi s Mrtvare. Rezultati, golovi i statistika.",
 };
 
 export const viewport = {
