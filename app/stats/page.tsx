@@ -1,8 +1,11 @@
+import Link from "next/link";
 import { Goal, Footprints, Trophy } from "lucide-react";
 import { getPlayerStats } from "@/lib/queries";
 import Leaderboard from "@/components/Leaderboard";
+import Podium from "@/components/Podium";
 import KitChip from "@/components/KitChip";
 import RealtimeRefresher from "@/components/RealtimeRefresher";
+import { seasonPodium } from "@/lib/stats";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +24,8 @@ export default async function StatsPage() {
     <div className="space-y-5">
       <RealtimeRefresher />
       <h1 className="display text-2xl">Statistika</h1>
+
+      <Podium top={seasonPodium(stats)} />
 
       <Leaderboard title="Najbolji strijelci" Icon={Goal} stats={stats} metric="goals" />
       <Leaderboard title="Najbolji asistenti" Icon={Footprints} stats={stats} metric="assists" />
@@ -52,9 +57,12 @@ export default async function StatsPage() {
                     {(s.team === "SPID" || s.team === "BELO") && (
                       <KitChip team={s.team} size={14} />
                     )}
-                    <span className="max-w-[7rem] truncate font-medium">
+                    <Link
+                      href={`/players/${s.player_id}`}
+                      className="max-w-[7rem] truncate font-medium hover:text-accent"
+                    >
                       {s.name}
-                    </span>
+                    </Link>
                   </span>
                 </td>
                 <td className="px-1 py-2 text-center font-mono tabular-nums text-muted">

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { X, Pencil, Check } from "lucide-react";
 import type { Player, PlayerTeam } from "@/lib/types";
@@ -42,7 +43,12 @@ export default function PlayerRow({
         ) : (
           <span className="h-3 w-3 rounded-full border border-border-strong" />
         )}
-        <span className="min-w-0 flex-1 truncate font-medium">{player.name}</span>
+        <Link
+          href={`/players/${player.id}`}
+          className="min-w-0 flex-1 truncate font-medium hover:text-accent"
+        >
+          {player.name}
+        </Link>
         <span className="eyebrow text-[11px] text-muted-2">
           {assigned ? TEAM_LABEL[player.team as "SPID" | "BELO"] : "—"}
         </span>

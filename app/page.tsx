@@ -5,6 +5,7 @@ import { isAdmin } from "@/lib/auth";
 import MatchCard from "@/components/MatchCard";
 import RivalryHeader from "@/components/RivalryHeader";
 import RealtimeRefresher from "@/components/RealtimeRefresher";
+import { teamForm } from "@/lib/stats";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,8 @@ export default async function HomePage() {
         draws={draws}
         spidGoals={spidGoals}
         beloGoals={beloGoals}
+        spidForm={teamForm(matches, "SPID")}
+        beloForm={teamForm(matches, "BELO")}
       />
 
       {admin && (
@@ -55,7 +58,15 @@ export default async function HomePage() {
             {admin && " Klikni „Nova utakmica” da dodaš prvu."}
           </p>
         ) : (
-          matches.map((m) => <MatchCard key={m.id} match={m} />)
+          matches.map((m, i) => (
+            <div
+              key={m.id}
+              className="rise-in"
+              style={{ animationDelay: `${Math.min(i, 8) * 45}ms` }}
+            >
+              <MatchCard match={m} />
+            </div>
+          ))
         )}
       </section>
     </div>

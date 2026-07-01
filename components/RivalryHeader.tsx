@@ -1,10 +1,9 @@
 import KitChip from "@/components/KitChip";
+import FormGuide from "@/components/FormGuide";
+import StreakBadge from "@/components/StreakBadge";
 import { TEAM_LABEL } from "@/lib/ui";
+import type { TeamForm } from "@/lib/stats";
 
-/**
- * Signature element — "tale of the tape" vječitog derbija SPID vs BELO.
- * Duotone split traka + ukupni omjer pobjeda i golova kroz sve utakmice.
- */
 export default function RivalryHeader({
   total,
   spidWins,
@@ -12,6 +11,8 @@ export default function RivalryHeader({
   draws,
   spidGoals,
   beloGoals,
+  spidForm,
+  beloForm,
 }: {
   total: number;
   spidWins: number;
@@ -19,6 +20,8 @@ export default function RivalryHeader({
   draws: number;
   spidGoals: number;
   beloGoals: number;
+  spidForm: TeamForm;
+  beloForm: TeamForm;
 }) {
   const decided = spidWins + beloWins + draws || 1;
   const spidPct = (spidWins / decided) * 100;
@@ -30,7 +33,7 @@ export default function RivalryHeader({
       <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
         <span className="eyebrow text-[11px] text-muted">Vječiti derbi</span>
         <span className="font-mono text-[11px] text-muted-2">
-          {total} {total === 1 ? "utakmica" : "utakmica"}
+          {total} utakmica
         </span>
       </div>
 
@@ -53,17 +56,25 @@ export default function RivalryHeader({
         </div>
         <div className="flex flex-col items-center gap-1.5">
           <KitChip team="BELO" size={30} />
-          <span
-            className="eyebrow text-center text-[11px]"
-            style={{ color: "var(--belo)" }}
-          >
+          <span className="eyebrow text-center text-[11px]" style={{ color: "var(--belo)" }}>
             {TEAM_LABEL.BELO}
           </span>
         </div>
       </div>
 
+      {/* Forma + niz */}
+      <div className="flex items-center justify-between gap-2 px-4 pt-3">
+        <div className="flex flex-col items-start gap-1">
+          <FormGuide results={spidForm.last5} size={16} />
+          <StreakBadge streak={spidForm.streak} />
+        </div>
+        <div className="flex flex-col items-end gap-1">
+          <FormGuide results={beloForm.last5} size={16} />
+          <StreakBadge streak={beloForm.streak} />
+        </div>
+      </div>
+
       <div className="px-4 pb-1 pt-3">
-        {/* Split traka: pobjede SPID | neriješeno | pobjede BELO */}
         <div className="flex h-2 overflow-hidden rounded-full bg-surface-2">
           <span style={{ width: `${spidPct}%`, background: "var(--spid)" }} />
           <span style={{ width: `${drawPct}%`, background: "var(--muted-2)" }} />

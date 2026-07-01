@@ -7,6 +7,7 @@ import type {
   Match,
   Team,
 } from "@/lib/types";
+import type { Result } from "@/lib/stats";
 
 export async function getPlayers(): Promise<Player[]> {
   const supabase = await createClient();
@@ -119,4 +120,108 @@ export async function getPlayerStats(): Promise<PlayerStats[]> {
   const supabase = await createClient();
   const { data } = await supabase.from("player_stats").select("*");
   return (data ?? []) as PlayerStats[];
+}
+
+export interface GoalLogEntry {
+  id: string;
+  matchId: string;
+  date: string;
+  minute: number | null;
+  team: Team;
+}
+
+export interface PlayerProfile {
+  player: Player;
+  stats: PlayerStats | null;
+  goalLog: GoalLogEntry[];
+  form: Result[]; // kronološki, zadnjih 5
+  wins: number;
+  losses: number;
+  draws: number;
+  maxGoalsInMatch: number;
+  isTopScorer: boolean;
+  isTopAssister: boolean;
+}
+
+export async function getPlayerProfile(
+  id: string,
+): Promise<PlayerProfile | null> {
+  const supabase = await createClient();
+
+  const { data: player } = await supabase
+    .from("players")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  if (!player) return null;
+
+  const [allStats, matches, { data: lineups }, { data: goalRows }] =
+    await Promise.all([
+      getPlayerStats(),
+      getMatches(),
+      supabase.from("match_lineups").select("match_id, team").eq("player_id", id),
+      supabase
+        .from("goals")
+        .select("id, minute, team, match_id")
+        .eq("scorer_id", id),
+    ]);
+
+  const stats = allStats.find((s) => s.player_id === id) ?? null;
+
+  const maxGoals = Math.max(0, ...allStats.map((s) => s.goals));
+  const maxAssists = Math.max(0, ...allStats.map((s) => s.assists));
+  const isTopScorer = !!stats && stats.goals > 0 && stats.goals === maxGoals;
+  const isTopAssister =
+    !!stats && stats.assists > 0 && stats.assists === maxAssists;
+
+  // Golovi po meču (za hat-trick) + log
+  const byMatch = new Map<string, number>();
+  for (const g of goalRows ?? [])
+    byMatch.set(g.match_id, (byMatch.get(g.match_id) ?? 0) + 1);
+  const maxGoalsInMatch = Math.max(0, ...byMatch.values());
+
+  const matchDate = new Map(matches.map((m) => [m.id, m.match_date]));
+  const goalLog: GoalLogEntry[] = (goalRows ?? [])
+    .map((g) => ({
+      id: g.id as string,
+      matchId: g.match_id as string,
+      date: matchDate.get(g.match_id as string) ?? "",
+      minute: g.minute as number | null,
+      team: g.team as Team,
+    }))
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  // Rezultati po odigranim mečevima (tim varira po meču)
+  const summaryById = new Map(matches.map((m) => [m.id, m]));
+  const played = (lineups ?? [])
+    .map((l) => ({ team: l.team as Team, m: summaryById.get(l.match_id) }))
+    .filter((x) => x.m)
+    .sort((a, b) => a.m!.match_date.localeCompare(b.m!.match_date)); // staro→novo
+
+  let wins = 0;
+  let losses = 0;
+  let draws = 0;
+  const results: Result[] = [];
+  for (const { team, m } of played) {
+    const mine = team === "SPID" ? m!.spid_score : m!.belo_score;
+    const theirs = team === "SPID" ? m!.belo_score : m!.spid_score;
+    const r: Result = mine > theirs ? "W" : mine < theirs ? "L" : "D";
+    results.push(r);
+    if (r === "W") wins++;
+    else if (r === "L") losses++;
+    else draws++;
+  }
+
+  return {
+    player: player as Player,
+    stats,
+    goalLog,
+    form: results.slice(-5),
+    wins,
+    losses,
+    draws,
+    maxGoalsInMatch,
+    isTopScorer,
+    isTopAssister,
+  };
 }

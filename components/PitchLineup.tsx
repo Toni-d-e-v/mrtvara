@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Player, GoalWithNames } from "@/lib/types";
 import KitChip from "@/components/KitChip";
 import { TEAM_LABEL } from "@/lib/ui";
@@ -33,9 +34,12 @@ function Marker({
           </span>
         )}
       </div>
-      <span className="max-w-full truncate rounded bg-black/55 px-1.5 py-0.5 text-[10px] font-medium text-white">
+      <Link
+        href={`/players/${player.id}`}
+        className="max-w-full truncate rounded bg-black/55 px-1.5 py-0.5 text-[10px] font-medium text-white"
+      >
         {player.name}
-      </span>
+      </Link>
     </div>
   );
 }

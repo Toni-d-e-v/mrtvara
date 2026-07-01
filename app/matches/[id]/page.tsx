@@ -1,5 +1,7 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMatch } from "@/lib/queries";
+import { formatDate, TEAM_LABEL } from "@/lib/ui";
 import { isAdmin } from "@/lib/auth";
 import ScoreHeader from "@/components/ScoreHeader";
 import MatchTabs from "@/components/MatchTabs";
@@ -8,9 +10,29 @@ import PitchLineup from "@/components/PitchLineup";
 import MatchStatsPanel from "@/components/MatchStatsPanel";
 import GoalForm from "@/components/GoalForm";
 import DeleteMatchButton from "@/components/DeleteMatchButton";
-import RealtimeRefresher from "@/components/RealtimeRefresher";
+import GoalCelebration from "@/components/GoalCelebration";
+import MvpBadge from "@/components/MvpBadge";
+import { matchMvp } from "@/lib/stats";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const detail = await getMatch(id);
+  if (!detail) return { title: "Utakmica — Mrtvara Liga" };
+  const title = `${TEAM_LABEL.SPID} ${detail.spidScore} : ${detail.beloScore} ${TEAM_LABEL.BELO}`;
+  const description = `Mrtvara Liga — ${formatDate(detail.match.match_date)}`;
+  return {
+    title,
+    description,
+    openGraph: { title, description },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 export default async function MatchPage({
   params,
@@ -22,15 +44,19 @@ export default async function MatchPage({
 
   if (!detail) notFound();
 
+  const mvp = matchMvp(detail.goals);
+
   return (
     <div className="space-y-4">
-      <RealtimeRefresher />
+      <GoalCelebration matchId={detail.match.id} />
 
       <ScoreHeader
         date={detail.match.match_date}
         spidScore={detail.spidScore}
         beloScore={detail.beloScore}
       />
+
+      {mvp && <MvpBadge mvp={mvp} />}
 
       {admin && (
         <GoalForm

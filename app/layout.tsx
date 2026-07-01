@@ -5,6 +5,7 @@ import { LogOut, Shield } from "lucide-react";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
 import KitChip from "@/components/KitChip";
+import SoundToggle from "@/components/SoundToggle";
 import { isAdmin } from "@/lib/auth";
 import { signOut } from "@/lib/actions";
 
@@ -24,9 +25,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Mrtvara Liga",
   description: "LIQUI MOLY vs FORMULA — vječiti derbi s Mrtvare. Rezultati, golovi i statistika.",
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Mrtvara" },
+  icons: {
+    icon: "/icons/icon-192.png",
+    apple: "/icons/apple-icon.png",
+  },
 };
 
 export const viewport = {
@@ -57,25 +70,28 @@ export default async function RootLayout({
                 MRTVARA <span className="text-accent">LIGA</span>
               </span>
             </Link>
-            {admin ? (
-              <form action={signOut}>
-                <button
-                  type="submit"
+            <div className="flex items-center gap-2">
+              <SoundToggle />
+              {admin ? (
+                <form action={signOut}>
+                  <button
+                    type="submit"
+                    className="flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:border-border-strong hover:text-foreground"
+                  >
+                    <LogOut size={13} />
+                    Odjava
+                  </button>
+                </form>
+              ) : (
+                <Link
+                  href="/login"
                   className="flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:border-border-strong hover:text-foreground"
                 >
-                  <LogOut size={13} />
-                  Odjava
-                </button>
-              </form>
-            ) : (
-              <Link
-                href="/login"
-                className="flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:border-border-strong hover:text-foreground"
-              >
-                <Shield size={13} />
-                Admin
-              </Link>
-            )}
+                  <Shield size={13} />
+                  Admin
+                </Link>
+              )}
+            </div>
           </div>
         </header>
 

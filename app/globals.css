@@ -21,13 +21,13 @@
   --belo-shade: #a52630;
   --on-belo: #ffffff;
 
-  /* Naglasak (live / aktivno / CTA) — jantar, odvojen od boja timova */
-  --accent: #f5a623;
-  --accent-soft: #f5a62326;
-  --on-accent: #0a0c10;
+  /* Naglasak (live / aktivno / CTA) — electro plava */
+  --accent: #4c8dff;
+  --accent-soft: #4c8dff26;
+  --on-accent: #06121f;
 
   /* Semantika rezultata */
-  --win: #f5a623;
+  --win: #4c8dff;
   --draw: #9aa3b2;
   --loss: #ef5350;
 
@@ -109,6 +109,67 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* ---------- Animacije ---------- */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes flash-pulse {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes goal-word {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) rotate(-6deg);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.15) rotate(-3deg);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1) rotate(-3deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.1) rotate(-3deg);
+  }
+}
+
+.rise-in {
+  animation: rise-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.pop-in {
+  animation: pop-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {

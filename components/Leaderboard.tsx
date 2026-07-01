@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import type { PlayerStats } from "@/lib/types";
 import KitChip from "@/components/KitChip";
@@ -39,9 +40,12 @@ export default function Leaderboard({
               {(s.team === "SPID" || s.team === "BELO") && (
                 <KitChip team={s.team} size={15} />
               )}
-              <span className="min-w-0 flex-1 truncate text-sm font-medium">
+              <Link
+                href={`/players/${s.player_id}`}
+                className="min-w-0 flex-1 truncate text-sm font-medium hover:text-accent"
+              >
                 {s.name}
-              </span>
+              </Link>
               <span className="font-mono text-sm font-semibold tabular-nums">
                 {s[metric]}
               </span>

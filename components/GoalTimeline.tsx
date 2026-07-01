@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useTransition } from "react";
 import { Goal, Footprints, Trash2 } from "lucide-react";
 import type { GoalWithNames } from "@/lib/types";
@@ -42,15 +43,33 @@ function GoalRow({ goal, admin }: { goal: GoalWithNames; admin: boolean }) {
     <div className={`flex min-w-0 items-center gap-2 ${isSpid ? "flex-row-reverse text-right" : "text-left"}`}>
       <Goal size={15} style={{ color }} className="shrink-0" />
       <div className="min-w-0">
-        <div className="truncate text-sm font-semibold">
-          {goal.scorer_name ?? "?"}
-        </div>
+        {goal.scorer_id ? (
+          <Link
+            href={`/players/${goal.scorer_id}`}
+            className="block truncate text-sm font-semibold hover:text-accent"
+          >
+            {goal.scorer_name ?? "?"}
+          </Link>
+        ) : (
+          <div className="truncate text-sm font-semibold">
+            {goal.scorer_name ?? "?"}
+          </div>
+        )}
         {goal.assist_name && (
           <div
             className={`flex items-center gap-1 truncate text-[11px] text-muted ${isSpid ? "flex-row-reverse" : ""}`}
           >
             <Footprints size={10} className="shrink-0" />
-            {goal.assist_name}
+            {goal.assist_id ? (
+              <Link
+                href={`/players/${goal.assist_id}`}
+                className="truncate hover:text-accent"
+              >
+                {goal.assist_name}
+              </Link>
+            ) : (
+              goal.assist_name
+            )}
           </div>
         )}
       </div>

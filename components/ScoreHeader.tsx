@@ -1,5 +1,6 @@
 import { formatDate, TEAM_LABEL } from "@/lib/ui";
-import KitChip from "@/components/KitChip";
+import Crest from "@/components/Crest";
+import AnimatedScore from "@/components/AnimatedScore";
 
 export default function ScoreHeader({
   date,
@@ -19,7 +20,6 @@ export default function ScoreHeader({
 
   return (
     <section className="relative overflow-hidden rounded-lg border border-border bg-surface">
-      {/* Duotone atmosfera */}
       <div
         className="pointer-events-none absolute inset-0 opacity-20"
         style={{
@@ -35,20 +35,20 @@ export default function ScoreHeader({
 
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
           <div className="flex flex-col items-center gap-2">
-            <KitChip team="SPID" size={44} />
+            <Crest team="SPID" size={46} className="pop-in" />
             <span className="eyebrow text-center text-xs text-spid">
               {TEAM_LABEL.SPID}
             </span>
           </div>
 
-          <div className="display flex items-baseline gap-2 text-5xl tabular-nums">
-            <span>{spidScore}</span>
+          <div className="display flex items-baseline gap-2 text-5xl">
+            <AnimatedScore value={spidScore} />
             <span className="text-2xl text-muted-2">:</span>
-            <span>{beloScore}</span>
+            <AnimatedScore value={beloScore} />
           </div>
 
           <div className="flex flex-col items-center gap-2">
-            <KitChip team="BELO" size={44} />
+            <Crest team="BELO" size={46} className="pop-in" />
             <span
               className="eyebrow text-center text-xs"
               style={{ color: "var(--belo)" }}
