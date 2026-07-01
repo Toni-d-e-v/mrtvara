@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { Crown } from "lucide-react";
 import type { Player, Team } from "@/lib/types";
 import { createMatch } from "@/lib/actions";
 import KitChip from "@/components/KitChip";
@@ -21,6 +22,8 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [date, setDate] = useState(nextFriday());
+  const [spidGk, setSpidGk] = useState<string | null>(null);
+  const [beloGk, setBeloGk] = useState<string | null>(null);
 
   const [assign, setAssign] = useState<Assignment>(() => {
     const init: Assignment = {};
@@ -41,6 +44,13 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
 
   function set(id: string, team: Team | "OUT") {
     setAssign((a) => ({ ...a, [id]: team }));
+    if (team !== "SPID" && spidGk === id) setSpidGk(null);
+    if (team !== "BELO" && beloGk === id) setBeloGk(null);
+  }
+
+  function toggleGk(id: string, team: Team) {
+    if (team === "SPID") setSpidGk((g) => (g === id ? null : id));
+    else setBeloGk((g) => (g === id ? null : id));
   }
 
   function submit() {
@@ -52,7 +62,13 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
       return;
     }
     startTransition(async () => {
-      const res = await createMatch({ matchDate: date, spidIds, beloIds });
+      const res = await createMatch({
+        matchDate: date,
+        spidIds,
+        beloIds,
+        spidGkId: spidGk,
+        beloGkId: beloGk,
+      });
       if (res.error) setError(res.error);
       else if (res.id) router.push(`/matches/${res.id}`);
     });
@@ -93,6 +109,24 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
               <span className="min-w-0 flex-1 truncate text-sm font-medium">
                 {p.name}
               </span>
+              {(v === "SPID" || v === "BELO") && (
+                <button
+                  type="button"
+                  onClick={() => toggleGk(p.id, v)}
+                  aria-label="Vratar"
+                  title="Vratar"
+                  className="shrink-0 transition-colors"
+                  style={{
+                    color:
+                      (v === "SPID" && spidGk === p.id) ||
+                      (v === "BELO" && beloGk === p.id)
+                        ? "var(--accent)"
+                        : "var(--muted-2)",
+                  }}
+                >
+                  <Crown size={16} />
+                </button>
+              )}
               <div className="flex overflow-hidden rounded-md border border-border">
                 <Seg active={v === "SPID"} color="var(--spid)" onClick={() => set(p.id, "SPID")}>
                   <KitChip team="SPID" size={16} />

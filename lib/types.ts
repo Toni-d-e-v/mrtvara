@@ -18,6 +18,7 @@ export interface MatchLineup {
   match_id: string;
   player_id: string;
   team: Team;
+  slot: number | null; // 0 = vratar, 1..n = redovi; null = starije utakmice
 }
 
 export interface Goal {

@@ -68,19 +68,27 @@ export async function getMatch(id: string): Promise<MatchDetail | null> {
 
   const { data: lineups } = await supabase
     .from("match_lineups")
-    .select("team, player:player_id(id, name, team, created_at)")
+    .select("team, slot, player:player_id(id, name, team, created_at)")
     .eq("match_id", id);
 
-  const spidLineup: Player[] = [];
-  const beloLineup: Player[] = [];
+  // Sortiraj po slotu (vratar=0 prvi); starije utakmice (slot null) po imenu.
+  const spidRows: { slot: number | null; player: Player }[] = [];
+  const beloRows: { slot: number | null; player: Player }[] = [];
   for (const row of lineups ?? []) {
     const player = row.player as unknown as Player;
     if (!player) continue;
-    if (row.team === "SPID") spidLineup.push(player);
-    else beloLineup.push(player);
+    const entry = { slot: (row.slot as number | null) ?? null, player };
+    if (row.team === "SPID") spidRows.push(entry);
+    else beloRows.push(entry);
   }
-  spidLineup.sort((a, b) => a.name.localeCompare(b.name));
-  beloLineup.sort((a, b) => a.name.localeCompare(b.name));
+  const bySlot = (
+    a: { slot: number | null; player: Player },
+    b: { slot: number | null; player: Player },
+  ) =>
+    (a.slot ?? 99) - (b.slot ?? 99) ||
+    a.player.name.localeCompare(b.player.name);
+  const spidLineup: Player[] = spidRows.sort(bySlot).map((r) => r.player);
+  const beloLineup: Player[] = beloRows.sort(bySlot).map((r) => r.player);
 
   const { data: goalRows } = await supabase
     .from("goals")

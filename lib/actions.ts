@@ -85,6 +85,8 @@ export async function createMatch(input: {
   matchDate: string;
   spidIds: string[];
   beloIds: string[];
+  spidGkId?: string | null;
+  beloGkId?: string | null;
 }): Promise<{ error?: string; id?: string }> {
   const supabase = await createClient();
 
@@ -96,17 +98,23 @@ export async function createMatch(input: {
 
   if (error || !match) return { error: "Greška pri kreiranju utakmice." };
 
+  // Vratar dobiva slot 0, ostali 1..n (redom). 4+1 raspored na terenu.
+  const build = (ids: string[], team: "SPID" | "BELO", gk?: string | null) => {
+    const ordered = [
+      ...ids.filter((id) => id === gk),
+      ...ids.filter((id) => id !== gk),
+    ];
+    return ordered.map((player_id, i) => ({
+      match_id: match.id,
+      player_id,
+      team,
+      slot: i,
+    }));
+  };
+
   const lineups = [
-    ...input.spidIds.map((player_id) => ({
-      match_id: match.id,
-      player_id,
-      team: "SPID" as const,
-    })),
-    ...input.beloIds.map((player_id) => ({
-      match_id: match.id,
-      player_id,
-      team: "BELO" as const,
-    })),
+    ...build(input.spidIds, "SPID", input.spidGkId),
+    ...build(input.beloIds, "BELO", input.beloGkId),
   ];
 
   if (lineups.length > 0) {

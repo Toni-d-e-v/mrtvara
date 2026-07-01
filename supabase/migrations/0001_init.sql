@@ -21,6 +21,7 @@ create table if not exists public.match_lineups (
   match_id uuid not null references public.matches(id) on delete cascade,
   player_id uuid not null references public.players(id) on delete cascade,
   team text not null check (team in ('SPID','BELO')),
+  slot smallint, -- 0 = vratar, 1..n = redovi (4+1); null = starije utakmice
   primary key (match_id, player_id)
 );
 
