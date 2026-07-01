@@ -4,6 +4,7 @@ import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { Player, Team } from "@/lib/types";
 import { createMatch } from "@/lib/actions";
+import KitChip from "@/components/KitChip";
 
 type Assignment = Record<string, Team | "OUT">;
 
@@ -60,18 +61,25 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
   return (
     <div className="space-y-4">
       <div>
-        <label className="mb-1 block text-xs text-muted">Datum</label>
+        <label className="eyebrow mb-1.5 block text-[11px] text-muted">
+          Datum
+        </label>
         <input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="w-full rounded-xl border border-border bg-surface px-3 py-2.5 outline-none focus:border-accent"
+          className="w-full rounded-md border border-border bg-surface-2 px-3 py-2.5 font-mono text-sm outline-none focus:border-accent"
         />
       </div>
 
-      <div className="flex justify-between px-1 text-sm font-semibold">
-        <span className="text-spid">SPID · {counts.spid}</span>
-        <span style={{ color: "var(--belo)" }}>{counts.belo} · BELO</span>
+      <div className="flex items-center justify-between rounded-md border border-border bg-surface px-3 py-2">
+        <span className="flex items-center gap-1.5 eyebrow text-sm text-spid">
+          <KitChip team="SPID" size={16} /> {counts.spid}
+        </span>
+        <span className="eyebrow text-[11px] text-muted-2">postava</span>
+        <span className="flex items-center gap-1.5 eyebrow text-sm" style={{ color: "var(--belo)" }}>
+          {counts.belo} <KitChip team="BELO" size={16} />
+        </span>
       </div>
 
       <div className="space-y-1.5">
@@ -80,12 +88,12 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
           return (
             <div
               key={p.id}
-              className="flex items-center gap-2 rounded-xl border border-border bg-surface px-3 py-2"
+              className="flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2"
             >
-              <span className="flex-1 truncate text-sm font-medium">
+              <span className="min-w-0 flex-1 truncate text-sm font-medium">
                 {p.name}
               </span>
-              <div className="flex overflow-hidden rounded-lg border border-border">
+              <div className="flex overflow-hidden rounded-md border border-border">
                 <Seg active={v === "SPID"} color="var(--spid)" onClick={() => set(p.id, "SPID")}>
                   SPID
                 </Seg>
@@ -101,12 +109,12 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
         })}
       </div>
 
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-loss">{error}</p>}
 
       <button
         onClick={submit}
         disabled={pending}
-        className="w-full rounded-xl bg-accent px-4 py-3 font-bold text-black disabled:opacity-60"
+        className="w-full rounded-md bg-accent px-4 py-3 font-semibold text-[color:var(--on-accent)] transition-opacity active:opacity-80 disabled:opacity-60"
       >
         {pending ? "Spremam…" : "Kreiraj utakmicu"}
       </button>
@@ -129,10 +137,10 @@ function Seg({
     <button
       type="button"
       onClick={onClick}
-      className="px-2.5 py-1.5 text-xs font-bold transition-colors"
+      className="eyebrow px-2.5 py-1.5 text-xs transition-colors"
       style={{
-        background: active ? (color ?? "var(--muted)") : "transparent",
-        color: active ? "#0b0e14" : "var(--muted)",
+        background: active ? (color ?? "var(--muted-2)") : "transparent",
+        color: active ? "var(--on-spid)" : "var(--muted)",
       }}
     >
       {children}

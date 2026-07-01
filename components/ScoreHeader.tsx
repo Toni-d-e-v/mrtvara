@@ -1,4 +1,5 @@
 import { formatDate } from "@/lib/ui";
+import KitChip from "@/components/KitChip";
 
 export default function ScoreHeader({
   date,
@@ -9,37 +10,52 @@ export default function ScoreHeader({
   spidScore: number;
   beloScore: number;
 }) {
+  const result =
+    spidScore > beloScore
+      ? "Pobjeda SPID"
+      : beloScore > spidScore
+        ? "Pobjeda BELO"
+        : "Neriješeno";
+
   return (
-    <section className="rounded-2xl border border-border bg-surface p-5">
-      <div className="mb-4 text-center text-xs font-medium text-muted">
-        {formatDate(date)}
-      </div>
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-        <div className="flex flex-col items-center gap-2">
-          <div
-            className="flex h-12 w-12 items-center justify-center rounded-full text-lg font-black"
-            style={{ background: "var(--spid)", color: "#0b0e14" }}
-          >
-            S
-          </div>
-          <span className="font-bold text-spid">SPID</span>
+    <section className="relative overflow-hidden rounded-lg border border-border bg-surface">
+      {/* Duotone atmosfera */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-20"
+        style={{
+          background:
+            "linear-gradient(115deg, var(--spid) 0%, transparent 42%, transparent 58%, var(--belo) 100%)",
+        }}
+      />
+
+      <div className="relative px-5 py-5">
+        <div className="mb-4 text-center font-mono text-[11px] text-muted-2">
+          {formatDate(date)}
         </div>
 
-        <div className="font-mono text-4xl font-black tabular-nums">
-          {spidScore}
-          <span className="mx-2 text-muted">:</span>
-          {beloScore}
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+          <div className="flex flex-col items-center gap-2">
+            <KitChip team="SPID" size={44} />
+            <span className="eyebrow text-sm text-spid">SPID</span>
+          </div>
+
+          <div className="display flex items-baseline gap-2 text-5xl tabular-nums">
+            <span>{spidScore}</span>
+            <span className="text-2xl text-muted-2">:</span>
+            <span>{beloScore}</span>
+          </div>
+
+          <div className="flex flex-col items-center gap-2">
+            <KitChip team="BELO" size={44} />
+            <span className="eyebrow text-sm" style={{ color: "var(--belo)" }}>
+              BELO
+            </span>
+          </div>
         </div>
 
-        <div className="flex flex-col items-center gap-2">
-          <div
-            className="flex h-12 w-12 items-center justify-center rounded-full text-lg font-black"
-            style={{ background: "var(--belo)", color: "#0b0e14" }}
-          >
-            B
-          </div>
-          <span className="font-bold" style={{ color: "var(--belo)" }}>
-            BELO
+        <div className="mt-4 text-center">
+          <span className="eyebrow rounded-full border border-border bg-background/40 px-3 py-1 text-[11px] text-muted">
+            {result}
           </span>
         </div>
       </div>

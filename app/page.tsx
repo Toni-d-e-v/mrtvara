@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Plus } from "lucide-react";
 import { getMatches } from "@/lib/queries";
 import { isAdmin } from "@/lib/auth";
 import MatchCard from "@/components/MatchCard";
+import RivalryHeader from "@/components/RivalryHeader";
 import RealtimeRefresher from "@/components/RealtimeRefresher";
 
 export const dynamic = "force-dynamic";
@@ -12,55 +14,43 @@ export default async function HomePage() {
   let spidWins = 0;
   let beloWins = 0;
   let draws = 0;
+  let spidGoals = 0;
+  let beloGoals = 0;
   for (const m of matches) {
+    spidGoals += m.spid_score;
+    beloGoals += m.belo_score;
     if (m.spid_score > m.belo_score) spidWins++;
     else if (m.belo_score > m.spid_score) beloWins++;
     else draws++;
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <RealtimeRefresher />
 
-      {/* Head-to-head */}
-      <section className="rounded-2xl border border-border bg-surface p-4">
-        <h2 className="mb-3 text-center text-xs font-semibold uppercase tracking-wider text-muted">
-          Međusobno ({matches.length} utakmica)
-        </h2>
-        <div className="grid grid-cols-3 items-center text-center">
-          <div>
-            <div className="text-2xl font-extrabold text-spid">{spidWins}</div>
-            <div className="text-xs text-muted">SPID</div>
-          </div>
-          <div className="text-sm text-muted">
-            <div className="text-lg font-bold text-foreground">{draws}</div>
-            neriješeno
-          </div>
-          <div>
-            <div
-              className="text-2xl font-extrabold"
-              style={{ color: "var(--belo)" }}
-            >
-              {beloWins}
-            </div>
-            <div className="text-xs text-muted">BELO</div>
-          </div>
-        </div>
-      </section>
+      <RivalryHeader
+        total={matches.length}
+        spidWins={spidWins}
+        beloWins={beloWins}
+        draws={draws}
+        spidGoals={spidGoals}
+        beloGoals={beloGoals}
+      />
 
       {admin && (
         <Link
           href="/matches/new"
-          className="block rounded-xl bg-accent px-4 py-3 text-center font-bold text-black"
+          className="flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-3 font-semibold text-[color:var(--on-accent)] transition-opacity active:opacity-80"
         >
-          + Nova utakmica
+          <Plus size={18} strokeWidth={2.5} />
+          Nova utakmica
         </Link>
       )}
 
       <section className="space-y-2.5">
-        <h2 className="px-1 text-sm font-semibold text-muted">Povijest</h2>
+        <h2 className="eyebrow px-0.5 text-xs text-muted">Povijest</h2>
         {matches.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted">
+          <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted">
             Još nema odigranih utakmica.
             {admin && " Klikni „Nova utakmica” da dodaš prvu."}
           </p>

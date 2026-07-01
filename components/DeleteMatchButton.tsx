@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { Trash2 } from "lucide-react";
 import { deleteMatch } from "@/lib/actions";
 
 export default function DeleteMatchButton({ id }: { id: string }) {
@@ -18,8 +19,9 @@ export default function DeleteMatchButton({ id }: { id: string }) {
           });
       }}
       disabled={pending}
-      className="w-full rounded-xl border border-red-500/40 px-4 py-2.5 text-sm font-semibold text-red-400 disabled:opacity-60"
+      className="flex w-full items-center justify-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:border-loss hover:text-loss disabled:opacity-60"
     >
+      <Trash2 size={15} />
       {pending ? "Brišem…" : "Obriši utakmicu"}
     </button>
   );

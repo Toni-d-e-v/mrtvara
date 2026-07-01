@@ -1,4 +1,6 @@
+import { Goal } from "lucide-react";
 import type { Player, GoalWithNames } from "@/lib/types";
+import KitChip from "@/components/KitChip";
 
 export default function LineupFaceoff({
   spid,
@@ -16,47 +18,58 @@ export default function LineupFaceoff({
   }
 
   return (
-    <section className="rounded-2xl border border-border bg-surface p-4">
-      <h2 className="mb-3 text-center text-xs font-semibold uppercase tracking-wider text-muted">
-        Postave
-      </h2>
-      <div className="grid grid-cols-2 gap-4">
-        <ul className="space-y-1.5">
-          {spid.map((p) => (
-            <li key={p.id} className="flex items-center gap-2 text-sm">
-              <span
-                className="h-2 w-2 shrink-0 rounded-full"
-                style={{ background: "var(--spid)" }}
-              />
-              <span className="truncate">{p.name}</span>
-              {goalCount.get(p.id) ? (
-                <span className="text-xs text-muted">
-                  {"⚽".repeat(goalCount.get(p.id)!)}
-                </span>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-        <ul className="space-y-1.5 text-right">
-          {belo.map((p) => (
+    <div className="grid grid-cols-2 gap-3">
+      <TeamColumn team="SPID" players={spid} goalCount={goalCount} align="left" />
+      <TeamColumn team="BELO" players={belo} goalCount={goalCount} align="right" />
+    </div>
+  );
+}
+
+function TeamColumn({
+  team,
+  players,
+  goalCount,
+  align,
+}: {
+  team: "SPID" | "BELO";
+  players: Player[];
+  goalCount: Map<string, number>;
+  align: "left" | "right";
+}) {
+  const right = align === "right";
+  const color = team === "SPID" ? "var(--spid)" : "var(--belo)";
+
+  return (
+    <div className="rounded-lg border border-border bg-surface">
+      <div
+        className={`flex items-center gap-2 border-b border-border px-3 py-2 ${right ? "flex-row-reverse" : ""}`}
+      >
+        <KitChip team={team} size={18} />
+        <span className="eyebrow text-xs" style={{ color }}>
+          {team}
+        </span>
+      </div>
+      <ul className="divide-y divide-border/60">
+        {players.map((p) => {
+          const g = goalCount.get(p.id) ?? 0;
+          return (
             <li
               key={p.id}
-              className="flex items-center justify-end gap-2 text-sm"
+              className={`flex items-center gap-1.5 px-3 py-2 text-sm ${right ? "flex-row-reverse text-right" : ""}`}
             >
-              {goalCount.get(p.id) ? (
-                <span className="text-xs text-muted">
-                  {"⚽".repeat(goalCount.get(p.id)!)}
+              <span className="min-w-0 flex-1 truncate">{p.name}</span>
+              {g > 0 && (
+                <span
+                  className={`flex shrink-0 items-center gap-0.5 font-mono text-[11px] text-muted ${right ? "flex-row-reverse" : ""}`}
+                >
+                  <Goal size={12} style={{ color }} />
+                  {g > 1 ? g : ""}
                 </span>
-              ) : null}
-              <span className="truncate">{p.name}</span>
-              <span
-                className="h-2 w-2 shrink-0 rounded-full"
-                style={{ background: "var(--belo)" }}
-              />
+              )}
             </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
