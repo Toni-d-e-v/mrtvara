@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LogOut, Shield } from "lucide-react";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
+import IntroSplash from "@/components/IntroSplash";
 import KitChip from "@/components/KitChip";
 import SoundToggle from "@/components/SoundToggle";
 import { isAdmin } from "@/lib/auth";
@@ -59,6 +60,15 @@ export default async function RootLayout({
       className={`${oswald.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        {/* Špica ide jednom po sesiji; odluka pada prije prvog paint-a da
+            sadržaj aplikacije ne bljesne ispod nje. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(location.search.indexOf('intro')>-1||!sessionStorage.getItem('mrtvara-intro')){sessionStorage.setItem('mrtvara-intro','1');var s=document.createElement('style');s.id='intro-on';s.textContent='body .intro{display:grid}html{overflow:hidden}';document.head.appendChild(s);window.__introT0=performance.now()}}catch(e){}`,
+          }}
+        />
+        <IntroSplash />
+
         <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
           <div className="mx-auto flex max-w-md items-center justify-between px-4 py-3">
             <Link href="/" className="flex items-center gap-2.5">

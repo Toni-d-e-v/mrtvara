@@ -172,6 +172,128 @@ input[type="number"] {
   animation: pop-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
+/* ---------- Uvodna špica: dumancic.dev ----------
+   Skripta u <body> ubaci <style id="intro-on"> prije prvog paint-a, pa
+   animacija krene odmah (bez čekanja hidracije) i bez diranja atributa na
+   <html>. Logo pada na udarac u 2.3s — vidi INTRO_BEATS u lib/sound.ts. */
+.intro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  align-content: center;
+  justify-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(120% 70% at 50% 118%, rgba(226, 55, 68, 0.12) 0%, transparent 60%),
+    radial-gradient(90% 60% at 50% 45%, #12161d 0%, #06080c 70%);
+  /* Sigurnosna mreža ako JS ne preuzme kraj špice. */
+  animation: intro-out 0.5s ease 9s both;
+}
+.intro.is-out {
+  animation: intro-out 0.7s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+.intro-sign {
+  display: grid;
+  justify-items: center;
+  gap: 26px;
+}
+.intro-credit {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  animation: intro-credit 0.9s cubic-bezier(0.16, 1, 0.3, 1) 400ms both;
+}
+.intro-logo {
+  width: min(88vw, 520px);
+  aspect-ratio: 754 / 63;
+  /* Logotip je maska pa svjetlo može prijeći kroz slova. */
+  -webkit-mask: url("/dumancic.svg") center / contain no-repeat;
+  mask: url("/dumancic.svg") center / contain no-repeat;
+  background:
+    linear-gradient(
+      100deg,
+      #ffffff 0%,
+      #ffffff 34%,
+      #cfe0ff 44%,
+      #ffffff 54%,
+      #ffffff 100%
+    )
+    0 0 / 300% 100%;
+  animation:
+    intro-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) 2300ms both,
+    intro-shine 2.8s ease-in-out 3200ms 2 both;
+}
+
+/* Vidi se samo kad preglednik drži zvuk blokiranim do prve geste. */
+.intro-hint {
+  position: absolute;
+  bottom: 42px;
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin-inline: auto;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  animation: intro-hint 2.4s ease-in-out infinite;
+}
+
+@keyframes intro-hint {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+@keyframes intro-credit {
+  from {
+    opacity: 0;
+    letter-spacing: 0.2em;
+  }
+  to {
+    opacity: 0.9;
+    letter-spacing: 0.36em;
+  }
+}
+@keyframes intro-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+    transform: scale(1.06);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: scale(1);
+  }
+}
+@keyframes intro-shine {
+  0% {
+    background-position: 130% 0;
+  }
+  55% {
+    background-position: -70% 0;
+  }
+  100% {
+    background-position: -70% 0;
+  }
+}
+@keyframes intro-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
