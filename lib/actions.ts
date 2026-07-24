@@ -32,17 +32,29 @@ export async function signOut() {
 
 // ---------- Players ----------
 
-export async function addPlayer(formData: FormData): Promise<void> {
+export async function addPlayer(
+  formData: FormData,
+): Promise<{ error?: string }> {
   const name = String(formData.get("name") ?? "").trim();
   const team = String(formData.get("team") ?? "UNASSIGNED") as
     | Team
     | "UNASSIGNED";
-  if (!name) return;
+  if (!name) return { error: "Upiši ime igrača." };
 
   const supabase = await createClient();
-  await supabase.from("players").insert({ name, team });
+  const { error } = await supabase.from("players").insert({ name, team });
+
+  if (error) {
+    // 23505 = unique violation, 42501 = RLS ne dopušta upis
+    if (error.code === "23505") return { error: `„${name}” već postoji.` };
+    if (error.code === "42501")
+      return { error: "Nemaš admin prava — prijavi se ponovno." };
+    return { error: error.message };
+  }
+
   revalidatePath("/players");
   revalidatePath("/stats");
+  return {};
 }
 
 export async function updatePlayerTeam(

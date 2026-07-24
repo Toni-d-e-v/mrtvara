@@ -19,7 +19,7 @@ export default function ScoreHeader({
         : "Neriješeno";
 
   return (
-    <section className="relative overflow-hidden rounded-lg border border-border bg-surface">
+    <section className="relative card overflow-hidden">
       <div
         className="pointer-events-none absolute inset-0 opacity-20"
         style={{
@@ -29,7 +29,7 @@ export default function ScoreHeader({
       />
 
       <div className="relative px-5 py-5">
-        <div className="mb-4 text-center font-mono text-[11px] text-muted-2">
+        <div className="mb-4 text-center text-[13px] tabular-nums text-muted-2">
           {formatDate(date)}
         </div>
 

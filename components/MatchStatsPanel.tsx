@@ -16,12 +16,12 @@ function StatBar({
   return (
     <div className="space-y-1.5">
       <div className="grid grid-cols-3 items-center text-sm">
-        <span className="font-mono font-semibold tabular-nums text-spid">
+        <span className="display text-spid">
           {spid}
         </span>
         <span className="text-center text-[11px] text-muted">{label}</span>
         <span
-          className="text-right font-mono font-semibold tabular-nums"
+          className="display text-right"
           style={{ color: "var(--belo)" }}
         >
           {belo}
@@ -63,14 +63,14 @@ export default function MatchStatsPanel({
 
   if (goals.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted">
+      <p className="empty">
         Nema statistike — još nema golova.
       </p>
     );
   }
 
   return (
-    <section className="space-y-4 rounded-lg border border-border bg-surface p-4">
+    <section className="space-y-4 card p-4">
       <StatBar label="Golovi" spid={spidScore} belo={beloScore} />
       <StatBar label="Asistencije" spid={spidAssists} belo={beloAssists} />
     </section>

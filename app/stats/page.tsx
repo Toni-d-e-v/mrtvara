@@ -21,9 +21,9 @@ export default async function StatsPage() {
   );
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <RealtimeRefresher />
-      <h1 className="display text-2xl">Statistika</h1>
+      <h1 className="display text-[28px] leading-tight">Statistika</h1>
 
       <Podium top={seasonPodium(stats)} />
 
@@ -31,56 +31,54 @@ export default async function StatsPage() {
       <Leaderboard title="Najbolji asistenti" Icon={Footprints} stats={stats} metric="assists" />
       <Leaderboard title="Najviše pobjeda" Icon={Trophy} stats={stats} metric="wins" />
 
-      <section className="overflow-hidden rounded-lg border border-border bg-surface">
-        <h2 className="eyebrow border-b border-border px-4 py-2.5 text-xs">
-          Svi igrači
-        </h2>
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="text-[11px] text-muted-2">
-              <th className="px-3 py-2 text-left font-medium">Igrač</th>
-              <th className="px-1 py-2 text-center font-medium">NAS</th>
-              <th className="px-1 py-2 text-center font-medium">G</th>
-              <th className="px-1 py-2 text-center font-medium">A</th>
-              <th className="px-2 py-2 text-center font-medium">P-N-I</th>
-            </tr>
-          </thead>
-          <tbody>
-            {table.map((s, i) => (
-              <tr
-                key={s.player_id}
-                className="border-t border-border/60"
-                style={{ background: i % 2 ? "var(--surface-2)" : "transparent" }}
-              >
-                <td className="px-3 py-2">
-                  <span className="flex items-center gap-2">
-                    {(s.team === "SPID" || s.team === "BELO") && (
-                      <KitChip team={s.team} size={14} />
-                    )}
-                    <Link
-                      href={`/players/${s.player_id}`}
-                      className="max-w-[7rem] truncate font-medium hover:text-accent"
-                    >
-                      {s.name}
-                    </Link>
-                  </span>
-                </td>
-                <td className="px-1 py-2 text-center font-mono tabular-nums text-muted">
-                  {s.appearances}
-                </td>
-                <td className="px-1 py-2 text-center font-mono font-semibold tabular-nums">
-                  {s.goals}
-                </td>
-                <td className="px-1 py-2 text-center font-mono tabular-nums">
-                  {s.assists}
-                </td>
-                <td className="px-2 py-2 text-center font-mono text-[11px] tabular-nums text-muted">
-                  {s.wins}-{s.draws}-{s.losses}
-                </td>
+      <section className="space-y-2">
+        <h2 className="eyebrow px-1 text-[11px] text-muted-2">Svi igrači</h2>
+        <div className="card overflow-hidden">
+          <table className="w-full">
+            <thead>
+              <tr className="eyebrow text-[10px] text-muted-2">
+                <th className="py-2.5 pl-4 pr-2 text-left font-semibold">Igrač</th>
+                <th className="w-9 px-1 py-2.5 text-right font-semibold">Nas</th>
+                <th className="w-9 px-1 py-2.5 text-right font-semibold">G</th>
+                <th className="w-9 px-1 py-2.5 text-right font-semibold">A</th>
+                <th className="w-[4.5rem] py-2.5 pl-2 pr-4 text-right font-semibold">
+                  P-N-I
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="list-table">
+              {table.map((s) => (
+                <tr key={s.player_id} className="text-[15px]">
+                  <td className="py-2.5 pl-4 pr-2">
+                    <span className="flex items-center gap-2">
+                      {(s.team === "SPID" || s.team === "BELO") && (
+                        <KitChip team={s.team} size={14} />
+                      )}
+                      <Link
+                        href={`/players/${s.player_id}`}
+                        className="max-w-[7rem] truncate font-medium hover:text-accent"
+                      >
+                        {s.name}
+                      </Link>
+                    </span>
+                  </td>
+                  <td className="px-1 py-2.5 text-right tabular-nums text-muted">
+                    {s.appearances}
+                  </td>
+                  <td className="px-1 py-2.5 text-right font-semibold tabular-nums">
+                    {s.goals}
+                  </td>
+                  <td className="px-1 py-2.5 text-right tabular-nums">
+                    {s.assists}
+                  </td>
+                  <td className="py-2.5 pl-2 pr-4 text-right text-[13px] tabular-nums text-muted-2">
+                    {s.wins}-{s.draws}-{s.losses}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

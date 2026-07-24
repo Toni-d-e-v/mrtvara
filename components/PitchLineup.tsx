@@ -30,7 +30,7 @@ function Marker({
           <KitChip team={team} size={22} />
         </div>
         {goals > 0 && (
-          <span className="absolute -right-1.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 font-mono text-[10px] font-bold leading-none text-[color:var(--on-accent)]">
+          <span className="absolute -right-1.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold tabular-nums leading-none text-[color:var(--on-accent)]">
             {goals}
           </span>
         )}

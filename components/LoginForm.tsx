@@ -7,7 +7,7 @@ export default function LoginForm() {
   const [state, formAction, pending] = useActionState(signIn, undefined);
 
   const inputClass =
-    "w-full rounded-md border border-border bg-surface-2 px-3 py-2.5 text-sm outline-none focus:border-accent";
+    "field";
 
   return (
     <form action={formAction} className="space-y-3">
@@ -39,7 +39,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-accent px-4 py-2.5 font-semibold text-[color:var(--on-accent)] transition-opacity active:opacity-80 disabled:opacity-60"
+        className="btn transition-opacity active:opacity-80 disabled:opacity-60"
       >
         {pending ? "Prijava…" : "Prijavi se"}
       </button>

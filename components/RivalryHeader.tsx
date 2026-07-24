@@ -29,10 +29,10 @@ export default function RivalryHeader({
   const beloPct = (beloWins / decided) * 100;
 
   return (
-    <section className="overflow-hidden rounded-lg border border-border bg-surface">
+    <section className="card overflow-hidden">
       <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
         <span className="eyebrow text-[11px] text-muted">Vječiti derbi</span>
-        <span className="font-mono text-[11px] text-muted-2">
+        <span className="text-[13px] tabular-nums text-muted-2">
           {total} utakmica
         </span>
       </div>
@@ -80,14 +80,14 @@ export default function RivalryHeader({
           <span style={{ width: `${drawPct}%`, background: "var(--muted-2)" }} />
           <span style={{ width: `${beloPct}%`, background: "var(--belo)" }} />
         </div>
-        <div className="mt-1.5 text-center font-mono text-[11px] text-muted-2">
+        <div className="mt-1.5 text-center text-[12px] tabular-nums text-muted-2">
           {draws} neriješeno
         </div>
       </div>
 
       <div className="grid grid-cols-2 border-t border-border">
         <div className="flex items-center justify-center gap-2 border-r border-border py-2.5">
-          <span className="font-mono text-lg font-semibold tabular-nums text-spid">
+          <span className="display text-lg text-spid">
             {spidGoals}
           </span>
           <span className="text-[11px] text-muted">golova</span>
@@ -95,7 +95,7 @@ export default function RivalryHeader({
         <div className="flex items-center justify-center gap-2 py-2.5">
           <span className="text-[11px] text-muted">golova</span>
           <span
-            className="font-mono text-lg font-semibold tabular-nums"
+            className="display text-lg"
             style={{ color: "var(--belo)" }}
           >
             {beloGoals}

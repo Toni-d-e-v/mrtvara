@@ -20,10 +20,10 @@ export default function SoundToggle() {
   return (
     <button
       onClick={toggle}
-      className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted transition-colors hover:border-border-strong hover:text-foreground"
+      className="chip press h-9 w-9 justify-center px-0"
       aria-label={muted ? "Uključi zvuk" : "Isključi zvuk"}
     >
-      {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+      {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
     </button>
   );
 }

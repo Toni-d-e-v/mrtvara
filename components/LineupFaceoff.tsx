@@ -41,7 +41,7 @@ function TeamColumn({
   const color = team === "SPID" ? "var(--spid)" : "var(--belo)";
 
   return (
-    <div className="rounded-lg border border-border bg-surface">
+    <div className="card">
       <div
         className={`flex items-center gap-2 border-b border-border px-3 py-2 ${right ? "flex-row-reverse" : ""}`}
       >

@@ -15,7 +15,7 @@ export default function GoalTimeline({
 }) {
   if (goals.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted">
+      <p className="empty">
         Još nema golova.
       </p>
     );
@@ -93,7 +93,7 @@ function GoalRow({ goal, admin }: { goal: GoalWithNames; admin: boolean }) {
     <li className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
       <div className="min-w-0">{isSpid && event}</div>
 
-      <span className="z-10 rounded-md border border-border bg-surface-2 px-1.5 py-0.5 font-mono text-[11px] tabular-nums text-muted">
+      <span className="z-10 rounded-md border border-border bg-surface-2 px-1.5 py-0.5 text-[11px] tabular-nums tabular-nums text-muted">
         {goal.minute != null ? `${goal.minute}'` : "—"}
       </span>
 

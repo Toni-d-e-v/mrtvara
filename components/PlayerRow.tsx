@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useTransition } from "react";
-import { X, Pencil, Check } from "lucide-react";
+import { X, Pencil, Check, ChevronRight } from "lucide-react";
 import type { Player, PlayerTeam } from "@/lib/types";
 import { updatePlayerTeam, updatePlayerName, deletePlayer } from "@/lib/actions";
 import KitChip from "@/components/KitChip";
@@ -34,25 +34,23 @@ export default function PlayerRow({
     });
   }
 
-  // ---- Non-admin: kompaktni redak ----
+  // ---- Non-admin: redak u grupiranoj listi ----
   if (!admin) {
     return (
-      <div className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2.5">
+      <Link
+        href={`/players/${player.id}`}
+        className="flex items-center gap-3 px-4 py-3 active:bg-surface-2"
+      >
         {assigned ? (
           <KitChip team={player.team as "SPID" | "BELO"} size={18} />
         ) : (
           <span className="h-3 w-3 rounded-full border border-border-strong" />
         )}
-        <Link
-          href={`/players/${player.id}`}
-          className="min-w-0 flex-1 truncate font-medium hover:text-accent"
-        >
+        <span className="min-w-0 flex-1 truncate text-[15px] font-medium">
           {player.name}
-        </Link>
-        <span className="eyebrow text-[11px] text-muted-2">
-          {assigned ? TEAM_LABEL[player.team as "SPID" | "BELO"] : "—"}
         </span>
-      </div>
+        <ChevronRight size={16} className="shrink-0 text-muted-2" />
+      </Link>
     );
   }
 
@@ -60,7 +58,7 @@ export default function PlayerRow({
   const teams: (PlayerTeam)[] = ["SPID", "UNASSIGNED", "BELO"];
 
   return (
-    <div className="space-y-2.5 rounded-lg border border-border bg-surface p-3">
+    <div className="space-y-2.5 card p-3">
       <div className="flex items-center gap-2.5">
         {assigned ? (
           <KitChip team={player.team as "SPID" | "BELO"} size={18} />
@@ -80,7 +78,7 @@ export default function PlayerRow({
                 setEditing(false);
               }
             }}
-            className="min-w-0 flex-1 rounded-md border border-accent bg-surface-2 px-2 py-1 text-sm font-medium outline-none"
+            className="field min-w-0 flex-1 px-2 py-1 text-sm"
           />
         ) : (
           <span className="min-w-0 flex-1 truncate font-medium">
@@ -121,7 +119,7 @@ export default function PlayerRow({
       </div>
 
       {/* Segmentirani odabir ekipe */}
-      <div className="flex overflow-hidden rounded-md border border-border">
+      <div className="segmented">
         {teams.map((t) => {
           const active = player.team === t;
           const color =
@@ -138,7 +136,8 @@ export default function PlayerRow({
                 startTransition(() => updatePlayerTeam(player.id, t))
               }
               disabled={pending}
-              className="flex flex-1 items-center justify-center gap-1.5 py-1.5 text-xs font-semibold transition-colors"
+              data-active={active}
+              className="flex items-center justify-center gap-1.5"
               style={{
                 background: active
                   ? `color-mix(in srgb, ${color} 22%, transparent)`

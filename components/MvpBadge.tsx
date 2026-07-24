@@ -10,7 +10,7 @@ export default function MvpBadge({ mvp }: { mvp: Mvp }) {
   return (
     <Link
       href={`/players/${mvp.playerId}`}
-      className="flex items-center gap-2.5 rounded-lg border border-border bg-surface px-4 py-2.5"
+      className="flex items-center gap-2.5 card px-4 py-2.5"
     >
       <span className="grid h-8 w-8 place-items-center rounded-full bg-accent-soft">
         <Crown size={16} className="text-accent" />
@@ -20,7 +20,7 @@ export default function MvpBadge({ mvp }: { mvp: Mvp }) {
         <div className="truncate font-semibold">{mvp.name}</div>
       </div>
       {bits.length > 0 && (
-        <span className="font-mono text-xs text-muted">{bits.join(" · ")}</span>
+        <span className="text-[13px] tabular-nums text-muted">{bits.join(" · ")}</span>
       )}
     </Link>
   );

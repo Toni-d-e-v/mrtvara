@@ -22,8 +22,8 @@ export default async function PlayersPage() {
   ];
 
   return (
-    <div className="space-y-5">
-      <h1 className="display text-2xl">Igrači</h1>
+    <div className="space-y-4">
+      <h1 className="display text-[28px] leading-tight">Igrači</h1>
 
       {admin && <AddPlayerForm />}
 
@@ -32,22 +32,31 @@ export default async function PlayersPage() {
         if (list.length === 0) return null;
         return (
           <section key={g.team} className="space-y-2">
-            <div className="flex items-center gap-2 px-0.5">
+            <div className="flex items-center gap-2 px-1">
               {(g.team === "SPID" || g.team === "BELO") && (
-                <KitChip team={g.team} size={16} />
+                <KitChip team={g.team} size={15} />
               )}
-              <h2 className="eyebrow text-xs" style={{ color: g.color }}>
+              <h2 className="eyebrow text-[11px]" style={{ color: g.color }}>
                 {g.title}
               </h2>
-              <span className="font-mono text-[11px] text-muted-2">
+              <span className="text-[12px] tabular-nums text-muted-2">
                 {list.length}
               </span>
             </div>
-            <div className="space-y-1.5">
-              {list.map((p) => (
-                <PlayerRow key={p.id} player={p} admin={admin} />
-              ))}
-            </div>
+
+            {admin ? (
+              <div className="space-y-2">
+                {list.map((p) => (
+                  <PlayerRow key={p.id} player={p} admin />
+                ))}
+              </div>
+            ) : (
+              <div className="card list overflow-hidden">
+                {list.map((p) => (
+                  <PlayerRow key={p.id} player={p} admin={false} />
+                ))}
+              </div>
+            )}
           </section>
         );
       })}

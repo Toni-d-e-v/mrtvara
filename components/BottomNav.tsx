@@ -14,8 +14,8 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-md items-stretch justify-around">
+    <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-[max(14px,env(safe-area-inset-bottom))]">
+      <div className="nav-island pointer-events-auto mx-auto flex max-w-[21rem] gap-1 p-1.5">
         {items.map(({ href, label, Icon }) => {
           const active =
             href === "/"
@@ -25,14 +25,22 @@ export default function BottomNav() {
             <Link
               key={href}
               href={href}
-              className="relative flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors"
-              style={{ color: active ? "var(--accent)" : "var(--muted)" }}
+              aria-current={active ? "page" : undefined}
+              className="press flex flex-1 flex-col items-center gap-1 rounded-[18px] py-2 text-[11px] font-medium transition-colors"
+              style={{
+                color: active ? "var(--foreground)" : "var(--muted)",
+                background: active ? "rgba(255,255,255,0.11)" : "transparent",
+                boxShadow: active
+                  ? "0 1px 3px rgba(0,0,0,0.35), var(--highlight)"
+                  : "none",
+              }}
             >
-              {active && (
-                <span className="absolute inset-x-6 top-0 h-0.5 rounded-full bg-accent" />
-              )}
-              <Icon size={20} strokeWidth={active ? 2.4 : 2} />
-              <span>{label}</span>
+              <Icon
+                size={20}
+                strokeWidth={active ? 2.3 : 1.9}
+                style={{ color: active ? "var(--accent)" : "inherit" }}
+              />
+              {label}
             </Link>
           );
         })}

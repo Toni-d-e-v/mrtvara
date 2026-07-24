@@ -20,39 +20,39 @@ export default function Leaderboard({
     .slice(0, 5);
 
   return (
-    <section className="rounded-lg border border-border bg-surface">
-      <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
-        <Icon size={15} className="text-accent" />
-        <h2 className="eyebrow text-xs">{title}</h2>
+    <section className="space-y-2">
+      <h2 className="eyebrow flex items-center gap-1.5 px-1 text-[11px] text-muted-2">
+        <Icon size={13} className="text-accent" />
+        {title}
+      </h2>
+      <div className="card overflow-hidden">
+        {ranked.length === 0 ? (
+          <p className="px-4 py-3.5 text-[15px] text-muted">Nema podataka.</p>
+        ) : (
+          <ol className="list">
+            {ranked.map((s, i) => (
+              <li key={s.player_id} className="flex items-center gap-3 px-4 py-3">
+                <span
+                  className="display w-4 text-center text-[15px]"
+                  style={{ color: i === 0 ? "var(--accent)" : "var(--muted-2)" }}
+                >
+                  {i + 1}
+                </span>
+                {(s.team === "SPID" || s.team === "BELO") && (
+                  <KitChip team={s.team} size={15} />
+                )}
+                <Link
+                  href={`/players/${s.player_id}`}
+                  className="min-w-0 flex-1 truncate text-[15px] font-medium hover:text-accent"
+                >
+                  {s.name}
+                </Link>
+                <span className="display text-[15px]">{s[metric]}</span>
+              </li>
+            ))}
+          </ol>
+        )}
       </div>
-      {ranked.length === 0 ? (
-        <p className="px-4 py-4 text-sm text-muted">Nema podataka.</p>
-      ) : (
-        <ol className="divide-y divide-border/60">
-          {ranked.map((s, i) => (
-            <li key={s.player_id} className="flex items-center gap-3 px-4 py-2.5">
-              <span
-                className="display w-5 text-center text-base tabular-nums"
-                style={{ color: i === 0 ? "var(--accent)" : "var(--muted-2)" }}
-              >
-                {i + 1}
-              </span>
-              {(s.team === "SPID" || s.team === "BELO") && (
-                <KitChip team={s.team} size={15} />
-              )}
-              <Link
-                href={`/players/${s.player_id}`}
-                className="min-w-0 flex-1 truncate text-sm font-medium hover:text-accent"
-              >
-                {s.name}
-              </Link>
-              <span className="font-mono text-sm font-semibold tabular-nums">
-                {s[metric]}
-              </span>
-            </li>
-          ))}
-        </ol>
-      )}
     </section>
   );
 }

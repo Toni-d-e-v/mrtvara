@@ -24,16 +24,16 @@ function Step({ player, rank }: { player: PlayerStats; rank: number }) {
         {player.name}
       </span>
       <div
-        className={`flex w-full ${heights[rank]} items-start justify-center rounded-t-md border-x border-t`}
+        className={`flex w-full ${heights[rank]} items-start justify-center rounded-t-[14px]`}
         style={{
-          borderColor: "var(--border)",
           background:
-            rank === 0 ? "var(--accent-soft)" : "var(--surface-2)",
+            rank === 0
+              ? "linear-gradient(180deg, color-mix(in srgb, var(--accent) 32%, transparent), color-mix(in srgb, var(--accent) 8%, transparent))"
+              : "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03))",
+          boxShadow: "var(--highlight)",
         }}
       >
-        <span className="pt-1 font-mono text-sm font-bold tabular-nums">
-          {player.goals}
-        </span>
+        <span className="display pt-1.5 text-[15px]">{player.goals}</span>
       </div>
     </Link>
   );
@@ -44,8 +44,10 @@ export default function Podium({ top }: { top: PlayerStats[] }) {
   const [first, second, third] = top;
 
   return (
-    <section className="rounded-lg border border-border bg-surface p-4">
-      <h2 className="eyebrow mb-3 text-xs text-muted">Podij sezone · golovi</h2>
+    <section className="card p-4">
+      <h2 className="eyebrow mb-3 text-[11px] text-muted-2">
+        Podij sezone · golovi
+      </h2>
       <div className="flex items-end gap-2">
         {second ? <Step player={second} rank={1} /> : <div className="flex-1" />}
         <Step player={first} rank={0} />

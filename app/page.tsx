@@ -26,7 +26,7 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <RealtimeRefresher />
 
       <RivalryHeader
@@ -43,7 +43,7 @@ export default async function HomePage() {
       {admin && (
         <Link
           href="/matches/new"
-          className="flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-3 font-semibold text-[color:var(--on-accent)] transition-opacity active:opacity-80"
+          className="btn transition-opacity active:opacity-80"
         >
           <Plus size={18} strokeWidth={2.5} />
           Nova utakmica
@@ -51,9 +51,9 @@ export default async function HomePage() {
       )}
 
       <section className="space-y-2.5">
-        <h2 className="eyebrow px-0.5 text-xs text-muted">Povijest</h2>
+        <h2 className="eyebrow px-1 text-[11px] text-muted-2">Povijest</h2>
         {matches.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted">
+          <p className="empty">
             Još nema odigranih utakmica.
             {admin && " Klikni „Nova utakmica” da dodaš prvu."}
           </p>

@@ -11,7 +11,7 @@ export default async function NewMatchPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="display text-2xl">Nova utakmica</h1>
+      <h1 className="display text-[28px] leading-tight">Nova utakmica</h1>
       {players.length === 0 ? (
         <p className="text-sm text-muted">
           Prvo dodaj igrače na stranici „Igrači”.

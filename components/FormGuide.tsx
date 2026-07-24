@@ -1,9 +1,15 @@
 import type { Result } from "@/lib/stats";
 
 const STYLE: Record<Result, { bg: string; fg: string }> = {
-  W: { bg: "var(--win)", fg: "var(--on-accent)" },
+  W: {
+    bg: "color-mix(in srgb, var(--win) 26%, transparent)",
+    fg: "var(--win)",
+  },
   D: { bg: "var(--surface-2)", fg: "var(--muted)" },
-  L: { bg: "var(--loss)", fg: "#fff" },
+  L: {
+    bg: "color-mix(in srgb, var(--loss) 24%, transparent)",
+    fg: "var(--loss)",
+  },
 };
 
 const LABEL: Record<Result, string> = { W: "P", D: "N", L: "I" };
@@ -21,7 +27,7 @@ export default function FormGuide({
       {results.map((r, i) => (
         <span
           key={i}
-          className="grid place-items-center rounded-full font-mono font-bold"
+          className="grid place-items-center rounded-full font-semibold"
           style={{
             width: size,
             height: size,

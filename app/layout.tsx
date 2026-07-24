@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Oswald, Inter, Geist_Mono } from "next/font/google";
+import { Inter, Inter_Tight, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { LogOut, Shield } from "lucide-react";
 import "./globals.css";
@@ -10,10 +10,11 @@ import SoundToggle from "@/components/SoundToggle";
 import { isAdmin } from "@/lib/auth";
 import { signOut } from "@/lib/actions";
 
-const oswald = Oswald({
-  variable: "--font-oswald",
+// Inter Tight za naslove i rezultate, Inter za tekst — blizu SF Pro Display/Text.
+const display = Inter_Tight({
+  variable: "--font-display-face",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["500", "600", "700", "800"],
 });
 
 const inter = Inter({
@@ -57,7 +58,7 @@ export default async function RootLayout({
   return (
     <html
       lang="hr"
-      className={`${oswald.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${display.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {/* Špica ide jednom po sesiji; odluka pada prije prvog paint-a da
@@ -69,34 +70,28 @@ export default async function RootLayout({
         />
         <IntroSplash />
 
-        <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
-          <div className="mx-auto flex max-w-md items-center justify-between px-4 py-3">
-            <Link href="/" className="flex items-center gap-2.5">
+        <header className="material sticky top-0 z-40 border-b border-border">
+          <div className="mx-auto flex max-w-md items-center justify-between gap-3 px-4 py-3">
+            <Link href="/" className="press flex items-center gap-2.5">
               <span className="flex items-center -space-x-1">
                 <KitChip team="SPID" size={20} />
                 <KitChip team="BELO" size={20} />
               </span>
-              <span className="display text-lg leading-none tracking-wide">
-                MRTVARA <span className="text-accent">LIGA</span>
+              <span className="display text-[17px] leading-none">
+                Mrtvara <span className="text-accent">Liga</span>
               </span>
             </Link>
             <div className="flex items-center gap-2">
               <SoundToggle />
               {admin ? (
                 <form action={signOut}>
-                  <button
-                    type="submit"
-                    className="flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:border-border-strong hover:text-foreground"
-                  >
+                  <button type="submit" className="chip press">
                     <LogOut size={13} />
                     Odjava
                   </button>
                 </form>
               ) : (
-                <Link
-                  href="/login"
-                  className="flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:border-border-strong hover:text-foreground"
-                >
+                <Link href="/login" className="chip press">
                   <Shield size={13} />
                   Admin
                 </Link>
@@ -105,7 +100,7 @@ export default async function RootLayout({
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-md flex-1 px-4 pb-24 pt-4">
+        <main className="mx-auto w-full max-w-md flex-1 px-4 pb-[7.5rem] pt-4">
           {children}
         </main>
 

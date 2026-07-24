@@ -84,7 +84,7 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="w-full rounded-md border border-border bg-surface-2 px-3 py-2.5 font-mono text-sm outline-none focus:border-accent"
+          className="field font-mono"
         />
       </div>
 
@@ -104,7 +104,7 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
           return (
             <div
               key={p.id}
-              className="flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2"
+              className="flex items-center gap-2 card px-3 py-2"
             >
               <span className="min-w-0 flex-1 truncate text-sm font-medium">
                 {p.name}
@@ -127,7 +127,7 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
                   <Crown size={16} />
                 </button>
               )}
-              <div className="flex overflow-hidden rounded-md border border-border">
+              <div className="segmented">
                 <Seg active={v === "SPID"} color="var(--spid)" onClick={() => set(p.id, "SPID")}>
                   <KitChip team="SPID" size={16} />
                 </Seg>
@@ -148,7 +148,7 @@ export default function NewMatchForm({ players }: { players: Player[] }) {
       <button
         onClick={submit}
         disabled={pending}
-        className="w-full rounded-md bg-accent px-4 py-3 font-semibold text-[color:var(--on-accent)] transition-opacity active:opacity-80 disabled:opacity-60"
+        className="btn transition-opacity active:opacity-80 disabled:opacity-60"
       >
         {pending ? "Spremam…" : "Kreiraj utakmicu"}
       </button>
@@ -171,7 +171,8 @@ function Seg({
     <button
       type="button"
       onClick={onClick}
-      className="flex min-w-[2.75rem] items-center justify-center px-2.5 py-2 text-xs font-semibold transition-colors"
+      data-active={active}
+      className="flex min-w-[2.6rem] items-center justify-center"
       style={{
         background: active ? `color-mix(in srgb, ${color} 22%, transparent)` : "transparent",
         color: active ? "var(--foreground)" : "var(--muted)",

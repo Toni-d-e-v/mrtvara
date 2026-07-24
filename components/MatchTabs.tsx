@@ -26,23 +26,17 @@ export default function MatchTabs({
 
   return (
     <div className="space-y-4">
-      <div className="flex border-b border-border">
-        {TABS.map(({ key, label }) => {
-          const active = tab === key;
-          return (
-            <button
-              key={key}
-              onClick={() => setTab(key)}
-              className="relative flex-1 py-2.5 text-sm font-semibold transition-colors"
-              style={{ color: active ? "var(--accent)" : "var(--muted)" }}
-            >
-              {label}
-              {active && (
-                <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-accent" />
-              )}
-            </button>
-          );
-        })}
+      <div className="segmented">
+        {TABS.map(({ key, label }) => (
+          <button
+            key={key}
+            onClick={() => setTab(key)}
+            data-active={tab === key}
+            aria-pressed={tab === key}
+          >
+            {label}
+          </button>
+        ))}
       </div>
       <div>{panel}</div>
     </div>

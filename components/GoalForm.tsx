@@ -54,11 +54,10 @@ export default function GoalForm({
     });
   }
 
-  const selectClass =
-    "w-full rounded-md border border-border bg-surface-2 px-3 py-2.5 text-sm outline-none focus:border-accent";
+  const selectClass = "field";
 
   return (
-    <section className="space-y-3 rounded-lg border border-border bg-surface p-4">
+    <section className="space-y-3 card p-4">
       <h2 className="eyebrow text-xs text-muted">Dodaj gol</h2>
 
       <div className="grid grid-cols-2 gap-2">
@@ -70,7 +69,7 @@ export default function GoalForm({
               key={t}
               type="button"
               onClick={() => pickTeam(t)}
-              className="flex items-center justify-center gap-2 rounded-md border py-2 text-sm font-semibold transition-colors"
+              className="press flex items-center justify-center gap-2 rounded-[13px] border py-2.5 text-sm font-semibold transition-colors"
               style={{
                 borderColor: active ? color : "var(--border)",
                 background: active ? "color-mix(in srgb, " + color + " 14%, transparent)" : "transparent",
@@ -103,7 +102,7 @@ export default function GoalForm({
           value={minute}
           onChange={(e) => setMinute(e.target.value)}
           placeholder="min"
-          className="w-20 rounded-md border border-border bg-surface-2 px-3 py-2.5 text-center font-mono text-sm outline-none focus:border-accent"
+          className="field w-20 text-center font-mono"
         />
       </div>
 
@@ -127,7 +126,7 @@ export default function GoalForm({
       <button
         onClick={submit}
         disabled={pending}
-        className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 font-semibold text-[color:var(--on-accent)] transition-opacity active:opacity-80 disabled:opacity-60"
+        className="btn transition-opacity active:opacity-80 disabled:opacity-60"
       >
         <Plus size={16} strokeWidth={2.5} />
         {pending ? "Spremam…" : "Dodaj gol"}

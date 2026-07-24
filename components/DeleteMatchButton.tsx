@@ -19,7 +19,7 @@ export default function DeleteMatchButton({ id }: { id: string }) {
           });
       }}
       disabled={pending}
-      className="flex w-full items-center justify-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:border-loss hover:text-loss disabled:opacity-60"
+      className="btn-quiet px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:border-loss hover:text-loss disabled:opacity-60"
     >
       <Trash2 size={15} />
       {pending ? "Brišem…" : "Obriši utakmicu"}

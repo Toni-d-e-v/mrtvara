@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 function Tile({ label, value }: { label: string; value: number | string }) {
   return (
-    <div className="rounded-lg border border-border bg-surface px-3 py-2.5 text-center">
+    <div className="card px-3 py-2.5 text-center">
       <div className="display text-2xl tabular-nums">{value}</div>
       <div className="eyebrow text-[10px] text-muted-2">{label}</div>
     </div>
@@ -35,7 +35,7 @@ export default async function PlayerProfilePage({
   const a = stats?.assists ?? 0;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <RealtimeRefresher />
 
       <Link
@@ -46,14 +46,14 @@ export default async function PlayerProfilePage({
       </Link>
 
       {/* Zaglavlje */}
-      <section className="flex items-center gap-4 rounded-lg border border-border bg-surface p-4">
+      <section className="flex items-center gap-4 card p-4">
         {assigned ? (
           <Crest team={player.team as "SPID" | "BELO"} size={44} />
         ) : (
           <span className="h-11 w-11 rounded-full border border-border-strong" />
         )}
         <div className="min-w-0">
-          <h1 className="display truncate text-2xl">{player.name}</h1>
+          <h1 className="display truncate text-[28px] leading-tight">{player.name}</h1>
           <div className="eyebrow text-[11px] text-muted-2">
             {assigned ? TEAM_LABEL[player.team as "SPID" | "BELO"] : "Neopredijeljen"}
           </div>
@@ -84,7 +84,7 @@ export default async function PlayerProfilePage({
       </div>
 
       {/* Forma + omjer */}
-      <section className="flex items-center justify-between rounded-lg border border-border bg-surface px-4 py-3">
+      <section className="flex items-center justify-between card px-4 py-3">
         <div>
           <div className="eyebrow mb-1.5 text-[10px] text-muted-2">Forma</div>
           {form.length > 0 ? (
@@ -95,7 +95,7 @@ export default async function PlayerProfilePage({
         </div>
         <div className="text-right">
           <div className="eyebrow mb-1 text-[10px] text-muted-2">P-N-I</div>
-          <div className="font-mono text-sm tabular-nums">
+          <div className="text-[15px] tabular-nums">
             {wins}-{draws}-{losses}
           </div>
         </div>
@@ -105,11 +105,11 @@ export default async function PlayerProfilePage({
       <section className="space-y-2">
         <h2 className="eyebrow px-0.5 text-xs text-muted">Golovi</h2>
         {goalLog.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted">
+          <p className="empty">
             Još nema golova.
           </p>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-border bg-surface">
+          <div className="card overflow-hidden">
             {goalLog.map((gl) => (
               <Link
                 key={gl.id}
@@ -126,7 +126,7 @@ export default async function PlayerProfilePage({
                 <span className="flex-1 text-sm">
                   {gl.date ? formatDate(gl.date) : "—"}
                 </span>
-                <span className="font-mono text-xs text-muted-2">
+                <span className="text-[13px] tabular-nums text-muted-2">
                   {gl.minute != null ? `${gl.minute}'` : ""}
                 </span>
               </Link>
