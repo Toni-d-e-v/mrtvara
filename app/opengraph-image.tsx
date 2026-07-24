@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { anonClient } from "@/lib/supabase/public";
+import { ogLogos } from "@/lib/og-logos";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -7,7 +8,10 @@ export const alt = "Mrtvara Liga — LIQUI MOLY vs FORMULA";
 
 export default async function Image() {
   const supabase = anonClient();
-  const { data: goals } = await supabase.from("goals").select("match_id, team");
+  const [{ data: goals }, logos] = await Promise.all([
+    supabase.from("goals").select("match_id, team"),
+    ogLogos(),
+  ]);
 
   const perMatch = new Map<string, { s: number; b: number }>();
   for (const g of goals ?? []) {
@@ -23,24 +27,27 @@ export default async function Image() {
     else if (b > s) beloWins++;
   }
 
-  const chip = (color: string, mono: string) => (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 130,
-        height: 130,
-        borderRadius: 26,
-        background: color,
-        color: "#fff",
-        fontSize: 60,
-        fontWeight: 800,
-      }}
-    >
-      {mono}
-    </div>
-  );
+  const chip = (color: string, mono: string, logo?: string) =>
+    logo ? (
+      <img src={logo} alt={mono} width={210} style={{ borderRadius: 10 }} />
+    ) : (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 130,
+          height: 130,
+          borderRadius: 26,
+          background: color,
+          color: "#fff",
+          fontSize: 60,
+          fontWeight: 800,
+        }}
+      >
+        {mono}
+      </div>
+    );
 
   return new ImageResponse(
     (
@@ -71,13 +78,13 @@ export default async function Image() {
           MRTVARA <span style={{ color: "#4c8dff" }}>LIGA</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 50 }}>
-          {chip("#2f6bff", "LM")}
+          {chip("#2f6bff", "LM", logos.SPID)}
           <div style={{ display: "flex", fontSize: 130, fontWeight: 800 }}>
             <span style={{ color: "#2f6bff" }}>{spidWins}</span>
             <span style={{ color: "#6b7385", margin: "0 22px" }}>:</span>
             <span style={{ color: "#e23744" }}>{beloWins}</span>
           </div>
-          {chip("#e23744", "F")}
+          {chip("#e23744", "F", logos.BELO)}
         </div>
         <div style={{ display: "flex", fontSize: 28, color: "#9aa3b2", marginTop: 40, letterSpacing: 4 }}>
           OMJER POBJEDA SVIH VREMENA

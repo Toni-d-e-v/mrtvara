@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { anonClient } from "@/lib/supabase/public";
+import { ogLogos } from "@/lib/og-logos";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -15,29 +16,35 @@ function TeamSide({
   name,
   color,
   mono,
+  logo,
 }: {
   name: string;
   color: string;
   mono: string;
+  logo?: string;
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24, width: 340 }}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: 150,
-          height: 150,
-          borderRadius: 30,
-          background: color,
-          color: "#fff",
-          fontSize: 72,
-          fontWeight: 800,
-        }}
-      >
-        {mono}
-      </div>
+      {logo ? (
+        <img src={logo} alt={name} width={230} style={{ borderRadius: 12 }} />
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 150,
+            height: 150,
+            borderRadius: 30,
+            background: color,
+            color: "#fff",
+            fontSize: 72,
+            fontWeight: 800,
+          }}
+        >
+          {mono}
+        </div>
+      )}
       <div style={{ fontSize: 40, fontWeight: 800, color, letterSpacing: 2 }}>
         {name}
       </div>
@@ -62,6 +69,8 @@ export default async function Image({
     .from("goals")
     .select("team")
     .eq("match_id", id);
+
+  const logos = await ogLogos();
 
   const spid = (goals ?? []).filter((g) => g.team === "SPID").length;
   const belo = (goals ?? []).filter((g) => g.team === "BELO").length;
@@ -97,13 +106,13 @@ export default async function Image({
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 40 }}>
-          <TeamSide name="LIQUI MOLY" color="#2f6bff" mono="LM" />
+          <TeamSide name="LIQUI MOLY" color="#2f6bff" mono="LM" logo={logos.SPID} />
           <div style={{ display: "flex", alignItems: "center", fontSize: 150, fontWeight: 800 }}>
             <span>{spid}</span>
             <span style={{ color: "#6b7385", margin: "0 24px" }}>:</span>
             <span>{belo}</span>
           </div>
-          <TeamSide name="FORMULA" color="#e23744" mono="F" />
+          <TeamSide name="FORMULA" color="#e23744" mono="F" logo={logos.BELO} />
         </div>
 
         <div style={{ display: "flex", fontSize: 30, color: "#9aa3b2", marginTop: 36 }}>

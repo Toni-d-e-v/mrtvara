@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Player, GoalWithNames } from "@/lib/types";
 import KitChip from "@/components/KitChip";
+import TeamLogo from "@/components/TeamLogo";
 import { TEAM_LABEL } from "@/lib/ui";
 
 /** Rasporedi igrače u formacijske redove: vratar + ostatak u do 3 linije. */
@@ -116,13 +117,13 @@ export default function PitchLineup({
 
       {/* Nazivi ekipa */}
       <div className="pointer-events-none absolute left-1/2 top-3 z-10 flex -translate-x-1/2 items-center gap-1.5">
-        <KitChip team="SPID" size={14} />
+        <TeamLogo team="SPID" width={34} />
         <span className="eyebrow text-[11px] text-white/90">
           {TEAM_LABEL.SPID}
         </span>
       </div>
       <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1.5">
-        <KitChip team="BELO" size={14} />
+        <TeamLogo team="BELO" width={34} />
         <span className="eyebrow text-[11px] text-white/90">
           {TEAM_LABEL.BELO}
         </span>

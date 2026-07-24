@@ -1,10 +1,16 @@
 import type { Team } from "@/lib/types";
+import { TEAM_LABEL } from "@/lib/ui";
 
 /**
- * Klupski grb (SVG štit) za ekipu.
- * LIQUI MOLY — plavi štit s monogramom „LM" i chevronom.
- * FORMULA — crveni štit s „F" i trkaćim prugama.
+ * Klupski grb (SVG štit) sa službenim logom ekipe.
+ * LIQUI MOLY — plavi štit s chevronom i logom.
+ * FORMULA — crveni štit s trkaćim prugama i „F" znakom.
  */
+const LOGO: Record<Team, { src: string; w: number; h: number }> = {
+  SPID: { src: "/logos/liqui-moly.png", w: 74, h: 48 },
+  BELO: { src: "/logos/formula-mark.png", w: 56, h: 56 },
+};
+
 export default function Crest({
   team,
   size = 48,
@@ -18,6 +24,7 @@ export default function Crest({
   const base = isSpid ? "var(--spid)" : "var(--belo)";
   const shade = isSpid ? "var(--spid-shade)" : "var(--belo-shade)";
   const gid = `crest-${team}`;
+  const logo = LOGO[team];
 
   return (
     <svg
@@ -25,7 +32,7 @@ export default function Crest({
       height={size * 1.2}
       viewBox="0 0 100 120"
       className={className}
-      aria-label={isSpid ? "LIQUI MOLY" : "FORMULA"}
+      aria-label={TEAM_LABEL[team]}
       role="img"
     >
       <defs>
@@ -75,20 +82,15 @@ export default function Crest({
         )}
       </g>
 
-      {/* Monogram */}
-      <text
-        x="50"
-        y={isSpid ? "50" : "52"}
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fontFamily="var(--font-display), sans-serif"
-        fontWeight="700"
-        fontSize={isSpid ? "30" : "44"}
-        fill="#fff"
-        style={{ letterSpacing: "0.02em" }}
-      >
-        {isSpid ? "LM" : "F"}
-      </text>
+      {/* Službeni logo */}
+      <image
+        href={logo.src}
+        x={(100 - logo.w) / 2}
+        y={56 - logo.h / 2}
+        width={logo.w}
+        height={logo.h}
+        preserveAspectRatio="xMidYMid meet"
+      />
     </svg>
   );
 }

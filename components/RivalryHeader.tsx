@@ -1,4 +1,4 @@
-import KitChip from "@/components/KitChip";
+import TeamLogo from "@/components/TeamLogo";
 import FormGuide from "@/components/FormGuide";
 import StreakBadge from "@/components/StreakBadge";
 import { TEAM_LABEL } from "@/lib/ui";
@@ -39,7 +39,7 @@ export default function RivalryHeader({
 
       <div className="grid grid-cols-3 items-end gap-2 px-4 pt-4">
         <div className="flex flex-col items-center gap-1.5">
-          <KitChip team="SPID" size={30} />
+          <TeamLogo team="SPID" width={68} priority />
           <span className="eyebrow text-center text-[11px] text-spid">
             {TEAM_LABEL.SPID}
           </span>
@@ -55,7 +55,7 @@ export default function RivalryHeader({
           </span>
         </div>
         <div className="flex flex-col items-center gap-1.5">
-          <KitChip team="BELO" size={30} />
+          <TeamLogo team="BELO" width={68} priority />
           <span className="eyebrow text-center text-[11px]" style={{ color: "var(--belo)" }}>
             {TEAM_LABEL.BELO}
           </span>

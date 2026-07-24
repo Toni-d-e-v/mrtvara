@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.join(__dirname),
   },
+  // OG kartice čitaju loga s diska (data-URI za next/og) — bez ovoga PNG-ovi
+  // ne završe u serverless bundleu.
+  outputFileTracingIncludes: {
+    "/opengraph-image": ["./public/logos/**"],
+    "/matches/[id]/opengraph-image": ["./public/logos/**"],
+  },
 };
 
 export default nextConfig;
