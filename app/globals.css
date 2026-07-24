@@ -173,9 +173,10 @@ input[type="number"] {
 }
 
 /* ---------- Uvodna špica: dumancic.dev ----------
-   Skripta u <body> ubaci <style id="intro-on"> prije prvog paint-a, pa
-   animacija krene odmah (bez čekanja hidracije) i bez diranja atributa na
-   <html>. Logo pada na udarac u 2.3s — vidi INTRO_BEATS u lib/sound.ts. */
+   Skripta u <body> ubaci <style id="intro-on"> prije prvog paint-a pa se
+   aplikacija ne vidi ispod špice. Špica čeka klik (zvuk traži gestu), a onda
+   klasa `is-playing` pokreće animacije. Vremena prate INTRO_BEATS u
+   lib/sound.ts — logo pada na udarac u 2.3s. */
 .intro {
   display: none;
   position: fixed;
@@ -187,17 +188,50 @@ input[type="number"] {
   background:
     radial-gradient(120% 70% at 50% 118%, rgba(226, 55, 68, 0.12) 0%, transparent 60%),
     radial-gradient(90% 60% at 50% 45%, #12161d 0%, #06080c 70%);
-  /* Sigurnosna mreža ako JS ne preuzme kraj špice. */
+}
+/* Sigurnosna mreža ako JS ne makne špicu — vrijedi tek nakon starta. */
+.intro.is-playing {
   animation: intro-out 0.5s ease 9s both;
 }
 .intro.is-out {
   animation: intro-out 0.7s cubic-bezier(0.4, 0, 1, 1) both;
 }
 
+/* Poziv na klik — bez njega preglednik ne pusti zvuk */
+.intro-gate {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.intro-gate-label {
+  padding: 13px 22px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: intro-pulse 2.4s ease-in-out infinite;
+}
+.intro-gate:hover .intro-gate-label {
+  color: var(--foreground);
+  border-color: var(--muted-2);
+}
+
+/* Potpis: „Omogućeno od strane" + logotip */
 .intro-sign {
   display: grid;
   justify-items: center;
   gap: 26px;
+  /* Širina prati padding špice pa je logo centriran i na uskom ekranu. */
+  width: min(100%, 520px);
+  visibility: hidden;
+}
+.intro.is-playing .intro-sign {
+  visibility: visible;
 }
 .intro-credit {
   font-family: var(--font-mono), monospace;
@@ -205,10 +239,13 @@ input[type="number"] {
   letter-spacing: 0.36em;
   text-transform: uppercase;
   color: var(--muted-2);
+}
+.intro.is-playing .intro-credit {
   animation: intro-credit 0.9s cubic-bezier(0.16, 1, 0.3, 1) 400ms both;
 }
 .intro-logo {
-  width: min(88vw, 520px);
+  width: 100%;
+  max-width: 520px;
   aspect-ratio: 754 / 63;
   /* Logotip je maska pa svjetlo može prijeći kroz slova. */
   -webkit-mask: url("/dumancic.svg") center / contain no-repeat;
@@ -223,34 +260,20 @@ input[type="number"] {
       #ffffff 100%
     )
     0 0 / 300% 100%;
+}
+.intro.is-playing .intro-logo {
   animation:
     intro-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) 2300ms both,
     intro-shine 2.8s ease-in-out 3200ms 2 both;
 }
 
-/* Vidi se samo kad preglednik drži zvuk blokiranim do prve geste. */
-.intro-hint {
-  position: absolute;
-  bottom: 42px;
-  left: 0;
-  right: 0;
-  width: fit-content;
-  margin-inline: auto;
-  font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--muted-2);
-  animation: intro-hint 2.4s ease-in-out infinite;
-}
-
-@keyframes intro-hint {
+@keyframes intro-pulse {
   0%,
   100% {
-    opacity: 0.35;
+    opacity: 0.45;
   }
   50% {
-    opacity: 0.8;
+    opacity: 1;
   }
 }
 @keyframes intro-credit {

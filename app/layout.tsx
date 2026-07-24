@@ -64,7 +64,7 @@ export default async function RootLayout({
             sadržaj aplikacije ne bljesne ispod nje. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(location.search.indexOf('intro')>-1||!sessionStorage.getItem('mrtvara-intro')){sessionStorage.setItem('mrtvara-intro','1');var s=document.createElement('style');s.id='intro-on';s.textContent='body .intro{display:grid}html{overflow:hidden}';document.head.appendChild(s);window.__introT0=performance.now()}}catch(e){}`,
+            __html: `try{if(location.search.indexOf('intro')>-1||!sessionStorage.getItem('mrtvara-intro')){sessionStorage.setItem('mrtvara-intro','1');var s=document.createElement('style');s.id='intro-on';s.textContent='body .intro{display:grid}html{overflow:hidden}';document.head.appendChild(s)}}catch(e){}`,
           }}
         />
         <IntroSplash />

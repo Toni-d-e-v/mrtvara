@@ -74,13 +74,6 @@ function cheer(c: AudioContext, at: number, dur: number) {
   src.stop(at + dur);
 }
 
-/** "running" tek nakon geste korisnika — prije toga preglednik šuti. */
-export function audioBlocked(): boolean {
-  if (typeof window === "undefined" || isMuted()) return false;
-  const c = audioCtx();
-  return !!c && c.state !== "running";
-}
-
 /** Autoplay policy: kontekst se smije pokrenuti tek nakon dodira/tipke. */
 export function unlockAudio(): void {
   try {
@@ -244,16 +237,16 @@ function impact(c: AudioContext, at: number, out: AudioScheduledSourceNode[]) {
 
 /** Sekunde od početka špice — mora se poklapati s CSS-om u `.intro`. */
 export const INTRO_BEATS = {
-  lights: [0.5, 0.78, 1.06, 1.34, 1.62],
+  signals: [0.5, 0.78, 1.06, 1.34, 1.62],
   out: 2.3,
 };
 
 /**
- * Zvuk uvodne špice. `offsetSec` je vrijeme koje je prošlo otkad je animacija
- * krenula (CSS starta prije hidracije) pa zvuk ostaje u ritmu sa svjetlima.
+ * Zvuk uvodne špice: napetost, pet signala pa udarac na koji pada logo.
+ * Pokreće se iz klika korisnika pa zvuk i animacija kreću zajedno.
  * Vraća funkciju za zaustavljanje.
  */
-export function playIntroTheme(offsetSec = 0): () => void {
+export function playIntroTheme(): () => void {
   const nodes: AudioScheduledSourceNode[] = [];
   const stop = () =>
     nodes.forEach((n) => {
@@ -271,23 +264,10 @@ export function playIntroTheme(offsetSec = 0): () => void {
     if (!c) return stop;
     if (c.state === "suspended") void c.resume();
 
-    // Autoplay policy: dok kontekst nije pokrenut, currentTime stoji na nuli.
-    // Tada se pomak ne primjenjuje — tema čeka odblokiranje i odsvira se cijela.
-    const running = c.state === "running";
-    if (!running) void c.resume();
-
-    const now = c.currentTime;
-    const shift = running ? Math.max(0, offsetSec) : 0;
-    const zero = now + 0.02 - shift;
-    const notBefore = (t: number) => Math.max(now + 0.02, t);
-
-    const build = INTRO_BEATS.out - shift;
-    if (build > 0.4) riser(c, notBefore(zero), build, nodes);
-    for (const t of INTRO_BEATS.lights) {
-      if (zero + t > now) startLight(c, zero + t, nodes);
-    }
-    // Udarac se uvijek čuje, po potrebi odmah.
-    impact(c, notBefore(zero + INTRO_BEATS.out), nodes);
+    const zero = c.currentTime + 0.02;
+    riser(c, zero, INTRO_BEATS.out, nodes);
+    for (const t of INTRO_BEATS.signals) startLight(c, zero + t, nodes);
+    impact(c, zero + INTRO_BEATS.out, nodes);
   } catch {
     // tiho ignoriraj (npr. autoplay policy)
   }
